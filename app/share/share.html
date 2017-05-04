@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/share.css">
+</head>
+<body>
+  <ul class="container" id="info">
+    
+  </ul> 
+  <script type="text/html" id="tplInfo">
+  {{each list value i}}
+      <li class="contain-inner">
+        {{value.text}}
+        <img class="inner-img" src="{{value.img}}" alt="">
+      </li>
+    {{/each}}
+  </script>
+  <script type="text/javascript" src="js/template.js"></script>
+  <script type="text/javascript" src="js/data.js"></script>
+  <script type="text/javascript">
+    adapt();
+    function adapt() {
+      if (document && window) {
+        // init font
+      var docEl = document.documentElement;
+      var isIOS = navigator.userAgent.match(/iphone|ipod|ipad/gi);
+      var dpr = isIOS? Math.min(window.devicePixelRatio, 3) : 1;
+        dpr = window.top === window.self? dpr : 1; //被iframe引用时，禁止缩放
+      var scale = 1 / dpr;
+      var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+
+      docEl.dataset.dpr = dpr;
+      var metaEl = document.createElement('meta');
+      metaEl.name = 'viewport';
+      metaEl.content = 'initial-scale=1,maximum-scale=1, minimum-scale=1';
+      docEl.firstElementChild.appendChild(metaEl);
+      var recalc = function () {
+        var width = docEl.clientWidth;
+        if (width / dpr > 750) {
+          width = 750 * dpr;
+        }
+        docEl.style.fontSize = 100 * (width / 750) + 'px';
+      };
+      recalc();
+      if (!document.addEventListener) return;
+      window.addEventListener(resizeEvt, recalc, false);
+      }
+    }
+    function query(){
+      var url = window.document.location.href.toString();
+      url = url.substr(url.indexOf('?') + 1);
+      if (typeof(url) === 'string') {
+        var u = url.split('&');
+        var get = {};
+        for (var i in u) {
+          if (typeof(u[i]) === 'string') {
+            var j = u[i].split('=');
+            get[j[0]] = j[1];
+          }
+        }
+        return get;
+      } else {
+        return {};
+      }
+    }
+
+    var sharefrom = query().sharefrom || '';
+    var html = '';
+    var title = '';
+    switch (sharefrom) {
+      case 'facebook' : 
+        title = 'Share from Facebook';
+        html = template('tplInfo', facebook);
+        break;
+      case 'youtobe' :
+        title = 'Share from YouTobe';
+        html = template('tplInfo', youtobe);
+        break;
+      case 'muse':
+        title = 'Share from muse';
+        html = template('tplInfo', muse);
+        break;
+      case 'instagram':
+        title = 'Share from Instagram';
+        html = template('tplInfo', instagram);
+        break;
+     }
+     document.title = title;
+    document.getElementById('info').innerHTML = html;
+  </script>
+</body>
+</html>
