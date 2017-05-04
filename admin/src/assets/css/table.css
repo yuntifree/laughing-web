@@ -1,0 +1,152 @@
+.tab_container{
+    width:100%;
+    height: 100%;
+    overflow-y: hidden;
+    position: relative;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.tablesorter {
+width: 100%;
+position:relative;
+border:0;
+}
+
+
+.tablesorter>tbody>tr>td,
+.tablesorter>tbody>tr>th,
+.tablesorter>tfoot>tr>td,
+.tablesorter>tfoot>tr>th,
+.tablesorter>thead>tr>td,
+.tablesorter>thead>tr>th{
+    vertical-align: middle;
+}
+
+.table-bordered tr>td:first-child,
+.table-bordered tr>th:first-child, 
+.table-bordered tr>td:nth-child(2),
+.table-bordered tr>th:nth-child(2) {
+    border-left-color:transparent;
+}
+.table-bordered tr>td:last-child,
+.table-bordered tr>th:last-child{
+    border-right: 0;
+}
+
+.tablesorter td{
+margin: 0;
+padding: 0;
+text-align:center;
+min-width:60px;
+}
+
+.tablesorter td input{
+    border:1px;
+}
+
+.tablesorter thead tr {
+height: 28px;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fefefe), color-stop(1, #E5E6EC));
+background-image: gradient(linear, left top, left bottom, color-stop(0, #fefefe), color-stop(1, #E5E6EC));
+text-align: left;
+cursor: pointer;
+border-bottom: 1px solid #BAC2CC;
+box-shadow: 2px 4px 5px #E5E6EC;
+}
+
+.tablesorter td{
+padding: 8px 10px;
+box-sizing:border-box;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+.tablesorter thead tr td{
+    padding: 8px 10px;
+}
+
+.tablesorter input[type=image] {
+margin-right: 10px;}
+
+
+.change-photo{
+    position: absolute;
+    left: 50%;
+    top: 0;
+    opacity:0.5;
+    filter:alpha(opacity=0.5);
+    width: 100%;
+    transform:translateX(-50%);
+}
+
+.sex-padding {
+    padding-top: 7px;
+}
+
+.radio-sex {
+    display:inline-block;
+    border-color: transparent;
+    width: auto;
+    height: auto;
+    line-height: 34px;
+    margin: 0;
+    padding: 0;
+}
+
+.sex-margin {
+    margin-bottom: 0;
+    margin-right: 5px;
+}
+
+.sex-outline:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.letter-textarea {
+    border: 1px solid #ccc;
+    width: 100%;
+    height: 100px;
+    display: block;
+}
+
+ul {
+  margin: 0;
+}
+.app_header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.table-comm td{
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 300px;
+}
+.img120,.img50 {
+    margin-right: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+.img120 {
+  line-height: 120px;
+}
+.img50 {
+  line-height: 50px; 
+}
+.img120 img,
+.img50 img {
+    width: 100%;
+    height: 100%
+}
+img[lazy=loading]{
+  width: 42px;
+  height: 45px;
+}
+
+
+
+

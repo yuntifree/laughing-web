@@ -1,0 +1,186 @@
+/**
+ * 角色配置文件: "1": admin “0”：甲方
+ */
+{
+  "1":  [{
+  "title": "用户管理",
+  "show": true,
+  "menus": [{
+    "title": "用户信息",
+    "name": "getUsers",
+    "icon": "yonghuxinxi"
+    },{
+    "title": "白名单管理",
+    "name": "whiteList",
+    "icon": "biaoshileibaimingdan"
+    },{
+    "title": "用户反馈",
+    "name": "feedback",
+    "icon": "wechaticon21"
+    }]
+  },{
+  "title": "运营管理",
+  "show": false,
+  "menus": [{
+    "title": "新闻审核",
+    "name": "newsReview",
+    "icon": "iconxw"
+    },{
+    "title": "标签管理",
+    "name": "tagsReview",
+    "icon": "biaoqian"
+    },{
+    "title": "视频审核",
+    "name": "videoReview",
+    "icon": "infenicon09"
+    },{
+    "title": "AP监控",
+    "name": "apReview",
+    "icon": "ap"
+    },{
+    "title": "Banner管理",
+    "name": "setBanner",
+    "icon": "bannerguanli"
+    },{
+    "title": "闪屏广告管理",
+    "name": "adban",
+    "icon": "shanping"
+    }]
+  },{
+  "title":"后台管理",
+  "show": false,
+  "menus": [{
+    "title": "图片上传",
+    "name": "uploadImg",
+    "icon": "icons01"
+    },{
+    "title": "活动配置",
+    "name": "setActivity",
+    "icon": "icon"
+    },{
+    "title": "web上线",
+    "name": "setWeb",
+    "icon": "yonghuxinxi"
+    },{
+    "title":"Android版本管理",
+    "name": "setAndroid",
+    "icon": "yonghuxinxi"
+    }]
+  }],
+  "0": [{
+    "title": "用户管理",
+    "show": true,
+    "menus": [{
+      "title": "用户反馈",
+      "name": "feedback",
+      "icon": "yonghuxinxi"
+    }]
+  },{
+    "title": "运营管理",
+    "show": false,
+    "menus": [{
+      "title": "AP监控",
+      "name": "apReview",
+      "icon": "ap"
+    }]
+  }]
+}
+
+
+      /*yyqSidebars: {
+        title: '一元抢',
+        show: false,
+        innermenus: [{
+          innertitle: "用户数据",
+          show: false,
+          menus: [{
+            title: "白名单管理",
+            name: "yyqWhite",
+            icon: "user"
+          },{
+            title: "用户活跃统计",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "用户反馈",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "用户公告",
+            name: "newsReview",
+            icon: "user"
+          }]
+        },{
+          innertitle: "商品数据",
+          show: false,
+          menus: [{
+            title: "商品详情",
+            name: "newsReview",
+            icon: "user"
+          }]
+        },{
+          innertitle: "商品销售数据",
+          show: false,
+          menus: [{
+            title: "开抢中商品",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "等待开抢商品",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "等待确认地址商品",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "已确认地址商品",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "待晒单商品",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "已晒单商品",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "已结束商品",
+            name: "newsReview",
+            icon: "user"
+          }]
+        },{
+          innertitle: "充值数据",
+          show: false,
+          menus: [{
+            title: "充值账单",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "充值统计",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "抢购统计",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "商品抢购统计",
+            name: "newsReview",
+            icon: "user"
+          }]
+        },{
+          innertitle: "晒单数据",
+          show: false,
+          menus: [{
+            title: "晒单审核",
+            name: "newsReview",
+            icon: "user"
+          },{
+            title: "晒单图片审核",
+            name: "newsReview",
+            icon: "user"
+          }]
+        }]
+      }*/
