@@ -28,7 +28,7 @@ var youtobe = {
 }
 var muse = {
   list:[{
-    text: 'Click the “share” button when you see a laugh video in YouTobe.',
+    text: 'Click the “share” button when you see a laugh video in muse.',
     img: './images/muse1.png'
   },
   {
@@ -42,7 +42,7 @@ var muse = {
 }
 var instagram = {
   list:[{
-    text: 'Click the “share” button when you see a laugh video in YouTobe.',
+    text: 'Click the “share” button when you see a laugh video in Instagram.',
     img: './images/instagram1.png'
   },
   {
@@ -54,7 +54,6 @@ var instagram = {
     img: './images/videolink.png'
   }]
 }
-
 
 window.facebook = facebook;
 window.youtobe = youtobe;
