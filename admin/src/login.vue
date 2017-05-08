@@ -23,6 +23,27 @@
 <script>
 import CGI from './lib/cgi.js'
 import md5 from 'md5'
+var sideBar = [{
+  "title": "用户管理",
+  "show": true,
+  "menus": [{
+    "title": "用户列表",
+    "name": "getUsers",
+    "icon": "yonghuxinxi"
+  },{
+    "title": "标签管理",
+    "name": "setTags",
+    "icon": "yonghuxinxi"
+  },{
+    "title": "审核分享",
+    "name": "reviewShare",
+    "icon": "yonghuxinxi"
+  },{
+    "title": "版本管理",
+    "name": "setVersion",
+    "icon": "yonghuxinxi"
+  }]
+}]
 
 export default {
   data() {
@@ -38,7 +59,7 @@ export default {
     login() {
       if (this.validate()) {
         CGI.post(this.$store.state, 'login',
-          {username:this.username, password:md5(this.password)},
+          {username:this.username, passwd:md5(this.password)},
           (resp)=>{
           if (resp.errno === 0) {
             var data = resp.data;
@@ -56,9 +77,9 @@ export default {
             }
             this.$store.state.uid = data.uid;
             // sidebar
-            this.$store.state.sidebar = this.$store.state.sidebar.concat(data.roleconf);
+            this.$store.state.sidebar = this.$store.state.sidebar.concat(sideBar);
             // set login
-            CGI.login(this.$store.state, data);
+            CGI.login(this.$store.state, data, sideBar);
             // sidebar                    
           } else {
             this.$store.state.logined = false;

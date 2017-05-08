@@ -28,9 +28,6 @@ export default {
       menuItem: 0
     }
   },
-  props: {
-    sidebars: Array,
-  },
   mounted() {
     this.menus = this.$store.state.sidebar;
     var viewName = '';
@@ -43,7 +40,6 @@ export default {
         subTitle = sessionStorage.getItem('subTitle');
       } catch(e) {}
     }
-    //console.log(viewName);
     for (var i=0; i<this.menus.length; i++) {
       for (var j=0; j<this.menus[i].menus.length; j++) {
         if (this.menus[i].menus[j].title == subTitle) {
@@ -56,9 +52,9 @@ export default {
         }
       }
     }
-    if (viewName == '') {
+    if (!viewName) {
       this.$store.state.paths = [this.$store.state.sidebar[0].title, this.$store.state.sidebar[0].menus[0].title];
-      this.$store.state.selItem = this.$store.state.paths[1];
+      this.selItem = this.$store.state.selItem = this.$store.state.paths[1];
       this.$store.state.view = this.$store.state.sidebar[0].menus[0].name;
     }   
     if (sessionStorage) {
@@ -81,7 +77,6 @@ export default {
           sessionStorage.setItem('viewName', view);
           sessionStorage.setItem('viewTitle', title);
           sessionStorage.setItem('subTitle', subtitle); 
-          console.log(this.menuIdx); 
           this.menus[this.menuIdx].show = false;
         } catch(e){}
       }

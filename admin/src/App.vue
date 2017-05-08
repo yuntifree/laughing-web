@@ -23,7 +23,9 @@ import Login from './login.vue'
 
 // import views
 import getUsers from './components/views/getUsers.vue'
-import whiteList from './components/views/whitelist.vue'
+import setTags from './components/views/setTags.vue'
+import reviewShare from './components/views/reviewShare.vue'
+import setVersion from './components/views/setVersion.vue'
 export default {
   name: 'app',
   data() {
@@ -50,7 +52,9 @@ export default {
     sidebar,
     getUsers,
     Login,
-    whiteList
+    setTags,
+    reviewShare,
+    setVersion
   },
   // for share components View using.
   mounted() {
@@ -310,5 +314,10 @@ button>i {
   line-height: 40px;
   margin-bottom: 10px;
   font-weight: bold;
+}
+.height80 {
+   width: 80px;
+   max-height: 80px;
+   overflow: hidden;
 }
 </style>

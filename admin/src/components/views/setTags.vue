@@ -67,7 +67,10 @@
         <div class="edit-form" style="width:600px">
           <el-form ref="form" :model="addInfo" label-width="80px">
             <el-form-item label="content">
-              <el-input v-model.trim="addInfo.content"></el-input>
+              <el-input v-model.trim="addInfo.content" placeholder="多个标签请用','分隔"></el-input>
+            </el-form-item>
+            <el-form-item label="img">
+              <uploader></uploader>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="addPost">确定</el-button>
@@ -96,6 +99,8 @@
 </template>
 <script>
 import CGI from '../../lib/cgi.js'
+import uploader from '../lib/uploader.vue'
+
 export default {
   data() {
     return {
@@ -130,6 +135,9 @@ export default {
       alertShow: false,
       alertMsg: '',
     }
+  },
+  components: {
+    uploader
   },
   computed: {
     tableHeight() {
@@ -194,16 +202,18 @@ export default {
         this.alertInfo('请输入标签名');
         return;
       }
-      var content = [];
-      content.push(this.addInfo.content);
       var param = {
-        tags: content
+        content: this.addInfo.content,
+        //img: this.$store.state.imgUrl[0]
+        img: '1.png'
       }
-      CGI.post(this.$store.state, 'add_tags', param, (resp)=> {
+      console.log(JSON.stringify(param));
+      CGI.post(this.$store.state, 'add_tag', param, (resp)=> {
         if (resp.errno == 0) {
           this.alertInfo('新增成功');
-          this.addInfo.id = resp.data.ids[0];
           this.tags.unshift(this.addInfo);
+          this.tags[0].id = resp.data.id;
+          this.$store.state.imgUrl = [];
           this.modal.addShow = false;
         } else {
           this.alertInfo(resp.desc);

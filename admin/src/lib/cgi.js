@@ -2,8 +2,7 @@ var ajax = require('./ajax')
 //var ajax = $.ajax;
 
 module.exports = {
-  //HOST: __DEV__ ? 'http://114.55.36.175':'',
-  HOST: __DEV__ ? 'http://120.76.236.185:8080':'',
+  HOST: __DEV__ ? 'http://120.76.236.185:8081':'',
   //CGI: '/oss-bin/',
   CGI: '/',
   get(state, action, param, callback) {
@@ -92,14 +91,14 @@ module.exports = {
     }
   },
 
-  login(state, data) {
+  login(state, data, sidebar) {
     //console.log(state);
     state.uid = data.uid;
     state.token = data.token;
 
     sessionStorage.uid = data.uid;
     sessionStorage.token = data.token;
-    sessionStorage.sidebar = JSON.stringify(data.roleconf);
+    sessionStorage.sidebar = JSON.stringify(sidebar);
 
     state.logined = true;
     //console.log(state.logined);

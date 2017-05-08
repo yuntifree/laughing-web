@@ -42,23 +42,28 @@
               </el-table-column>
               <el-table-column
                 inline-template
-                label="渠道名">
-                <div>{{row.channel||'-'}}</div>
-              </el-table-column>
-              <el-table-column
-                inline-template
-                label="渠道名">
-                <div>{{row.cname||'-'}}</div>
-              </el-table-column>
-              <el-table-column
-                inline-template
-                label="内部版本号">
+                label="版本号">
                 <div>{{row.version||'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
-                label="外部版本号">
+                label="版本名称">
                 <div>{{row.vname||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                label="终端">
+                <div>{{row.term ? 'ios' : 'android'||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                label="标题">
+                <div>{{row.title||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                label="副标题">
+                <div>{{row.subtitle||'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
@@ -67,11 +72,16 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="更新说明">
+                <div>{{row.desc||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 :context="_self"
                 label="操作"
                 width="100">
                 <span>
-                  <el-button @click="editAct($index,row)" type="text" size="small">编辑</el-button>
+                  <el-button @click="editAct($index,row)" type="text" size="small">删除</el-button>
                 </span>
               </el-table-column>
             </el-table>
@@ -88,35 +98,49 @@
       </el-pagination>
       <div class="shade" v-if="modal.addShow" >
         <div class="edit-form" style="width:600px">
-          <el-form ref="form" :model="addInfo" label-width="80px">
-            <el-form-item label="渠道名(英)">
-              <el-input v-model.trim="addInfo.channel" placeholder="请输入渠道名(英)"></el-input>
+          <div class="form-title">{{modal.title}}</div>
+          <el-form :model="addInfo" :rules="rules" ref="ruleForm" label-width="80px">
+            <el-form-item label="版本号" prop="version">
+              <el-input v-model.number="addInfo.version" placeholder="请填写版本号(数字）"></el-input>
             </el-form-item>
-            <el-form-item label="渠道名(中)">
+            <el-form-item label="版本名称" prop="vname">
               <el-input
-                placeholder="请输入渠道名(中)"
-                v-model.trim="addInfo.cname">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="内部版本号">
-              <el-input
-                type="number"
-                placeholder="请输入内部版本号"
-                v-model.trim="addInfo.version">
-              </el-input>
-            </el-form-item> 
-            <el-form-item label="外部版本号">
-              <el-input
-                placeholder="请外部版本号"
+                placeholder="请填写版本名称"
                 v-model.trim="addInfo.vname">
               </el-input>
+            </el-form-item>
+            <el-form-item label="手机终端" prop="term">
+              <el-radio-group 
+                placeholder="请填写内部版本号"
+                v-model="addInfo.term">
+                <el-radio label="0">Android</el-radio>
+                <el-radio label="1">Ios</el-radio>
+              </el-radio-group>
             </el-form-item> 
-            <el-form-item label="下载地址">
+            <el-form-item label="标题" prop="title">
               <el-input
-                placeholder="请输入下载地址"
+                placeholder="请填写标题"
+                v-model.trim="addInfo.title">
+              </el-input>
+            </el-form-item> 
+            <el-form-item label="副标题" prop="subtitle">
+              <el-input
+                placeholder="请填写副标题"
+                v-model.trim="addInfo.subtitle">
+              </el-input>
+            </el-form-item> 
+            <el-form-item label="下载地址" prop="downurl">
+              <el-input
+                placeholder="请填写下载地址"
                 v-model.trim="addInfo.downurl">
               </el-input>
-            </el-form-item>  
+            </el-form-item> 
+            <el-form-item label="更新说明" prop="desc">
+              <el-input
+                placeholder="请填写更新说明"
+                v-model.trim="addInfo.desc">
+              </el-input>
+            </el-form-item> 
             <el-form-item>
               <el-button type="primary" @click="addPost">确定</el-button>
               <el-button @click="modal.addShow=false">取消</el-button>
@@ -143,7 +167,8 @@ export default {
       infos: [],
       modal: {
         addShow: false,
-        editShow: false,
+        title: '',
+        delShow: false
       },
 
       pageCfg: {
@@ -155,14 +180,40 @@ export default {
       selIdx: -1,
       search: '',
       addInfo: {
-        channel: '',
-        cname: '',
         version: 0,
         vname: '',
-        downurl: ''
+        term: '0',
+        title: '',
+        subtitle: '',
+        downurl: '',
+        desc: ''
       },
       alertShow: false,
       alertMsg: '',
+      rules: {
+          version: [
+            { required: true, message: '请填写版本号'},
+            { type: 'number', message: '版本号必须为数字值', trigger: 'blur' }
+          ],
+          vname: [
+            { required: true, message: '请填写版本名称', trigger: 'blur' }
+          ],
+          term: [
+            { required: true, message: '请选择手机终端', trigger: 'change' }
+          ],
+          title: [
+            { required: true, message: '请填写标题', trigger: 'blur' }
+          ],
+          subtitle: [
+            { required: true, message: '请填写副标题', trigger: 'blur' }
+          ],
+          downurl: [
+            { required: true, message: '请填写下载地址', trigger: 'blur' }
+          ],
+          desc: [
+            { required: true, message: '请填写更新说明', trigger: 'blur' }
+          ]
+        }
     }
   },
   computed: {
@@ -199,7 +250,7 @@ export default {
         num: 30,
       }
 
-      CGI.post(this.$store.state, 'get_channel_version', param, (resp) => {
+      CGI.post(this.$store.state, 'get_versions', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
           this.infos = data.infos;
@@ -208,7 +259,7 @@ export default {
         } else {
           this.alertInfo(resp.desc);
         }
-      });
+      })
     },
     handleSizeChange(val) {
       console.log('每页 ${val} 条');
@@ -220,66 +271,33 @@ export default {
     },
     addAct() {
       CGI.objClear(this.addInfo);
-      this.modal.editShow = false;
+      this.modal.title = '添加';
+      this.addInfo.version = 0;
+      this.addInfo.term = '0';
       this.modal.addShow = true;
-    },
-    makeparam() {
-      var ret = true;
-      if (this.addInfo.channel.length <=0) {
-        this.alertInfo('请输入渠道名(英)');
-        ret = false;
-      }
-      if (this.addInfo.cname.length <=0) {
-        this.alertInfo('请输入渠道名(中)');
-        ret = false;
-      }
-      if (this.addInfo.vname.length <=0) {
-        this.alertInfo('请输入外部版本号');
-        ret = false;
-      }
-      if (this.addInfo.downurl.length <=0) {
-        this.alertInfo('请输入下载地址');
-        ret = false;
-      }
-      return ret;
     },
     addPost() {
-      if (!this.makeparam()) {
-        return;
-      }
-      var param = {};
-      var action = ''
-      if (this.modal.editShow) {
-        param = this.addInfo
-        param.id = this.infos[this.selIdx].id;
-        action = 'mod_channel_version';
-      } else {
-        param = CGI.objModified(this.infos[this.selIdx], this.addInfo);
-        action = 'add_channel_version';
-      }
-      CGI.post(this.$store.state, action, param, (resp)=> {
-        if (resp.errno == 0) {
-          if (this.modal.editShow) {
-            this.alertInfo('修改成功');
-            CGI.extend(this.infos[this.selIdx], this.addInfo);
-            this.selIdx = -1;
-          } else {
-            this.alertInfo('新增成功');
-            var u = CGI.clone(this.addInfo);
-            u.id= resp.data.id;
-            this.infos.unshift(this.addInfo);
-          }         
-          this.modal.addShow = false;
-        } else {
-          this.alertInfo(resp.desc);
-        }
-      })        
-    },
-    editAct(idx, row) {
-      this.selIdx = idx;
-      CGI.extend(this.addInfo, row);
-      this.modal.editShow = true;
-      this.modal.addShow = true;
+      var _this = this;
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          //_this.postInfo.img = _this.$store.state.imgUrl[0];
+           var param = CGI.clone(this.addInfo);
+           param.term = ~~param.term;
+           console.log(JSON.stringify(param));
+          CGI.post(this.$store.state, 'add_version', param, function(resp) {
+            if (resp.errno == 0) {
+                _this.alertInfo('新增成功');
+                var u = CGI.clone(_this.addInfo);
+                u.id= resp.data.id;
+                console.log(JSON.stringify(u))
+                _this.infos.unshift(u);        
+                _this.modal.addShow = false;
+            } else {
+              _this.alertInfo(resp.desc);
+            }
+          })
+        }//else {}
+      })     
     },
     alertInfo(val) {
       this.alertShow = true;

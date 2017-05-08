@@ -30,33 +30,38 @@
               </el-table-column>
               <el-table-column
                 inline-template
-                label="imei">
-                <div>{{row.imei||'-'}}</div>
+                label="播放次数">
+                <div>{{row.views||'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
-                label="头像">
-                <div><img :src="row.headurl"></div>
+                label="图片">
+                <div class="height80" ><img class="height80" :src="row.img"></div>
               </el-table-column>
               <el-table-column
                 inline-template
-                label="昵称">
+                label="标题">
+                <div>{{row.title||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                label="描述">
+                <div>{{row.desc||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                label="分享者uid">
+                <div>{{row.uid||0}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                label="分享者昵称">
                 <div>{{row.nickname||'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
-                label="粉丝数">
-                <div>{{row.followers||'-'}}</div>
-              </el-table-column>
-              <el-table-column
-                inline-template
-                label="关注数">
-                <div>{{row.following||0}}</div>
-              </el-table-column>
-              <el-table-column
-                inline-template
-                label="注册时间">
-                <div>{{row.ctime||'-'}}</div>
+                label="分享者头像">
+                <div><img :src="row.headurl"></div>
               </el-table-column>
             </el-table>
           </template>
@@ -163,8 +168,9 @@ export default {
       var param = {
         seq: this.pageCfg.start || 0,
         num: 30,
+        type: 0
       };
-      CGI.post(this.$store.state, 'get_users', param, (resp) => {
+      CGI.post(this.$store.state, 'get_shares', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
           this.users = data.infos;

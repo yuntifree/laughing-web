@@ -1,136 +1,21 @@
-{
-  "1":  [{
+[{
   "title": "用户管理",
   "show": true,
   "menus": [{
-    "title": "用户信息",
-    "name": "getUsers",
-    "icon": "yonghuxinxi"
-    },{
-    "title": "白名单管理",
-    "name": "whiteList",
-    "icon": "biaoshileibaimingdan"
-    },{
-    "title": "用户反馈",
+    "title": "用户列表",
     "name": "feedback",
-    "icon": "wechaticon21"
-    }]
+    "icon": "yonghuxinxi"
   },{
-  "title": "运营管理",
-  "show": false,
-  "menus": [{
-    "title": "新闻审核",
-    "name": "newsReview",
-    "icon": "iconxw"
-    },{
     "title": "标签管理",
-    "name": "tagsReview",
-    "icon": "biaoqian"
-    },{
-    "title": "视频审核",
-    "name": "videoReview",
-    "icon": "infenicon09"
-    },{
-    "title": "AP监控",
-    "name": "apReview",
-    "icon": "ap"
-    },{
-    "title": "Banner管理",
-    "name": "setBanner",
-    "icon": "bannerguanli"
-    },{
-    "title": "闪屏广告管理",
-    "name": "adban",
-    "icon": "shanping"
-    }]
+    "name": "setTag",
+    "icon": "yonghuxinxi"
   },{
-  "title":"后台管理",
-  "show": false,
-  "menus": [{
-    "title": "图片上传",
-    "name": "uploadImg",
-    "icon": "icons01"
-    },{
-    "title": "活动配置",
-    "name": "setActivity",
-    "icon": "icon"
-    },{
-    "title": "login上线",
-    "name": "setlogin",
+    "title": "审核分享",
+    "name": "reviewShare",
     "icon": "yonghuxinxi"
-    },{
-    "title": "portal上线",
-    "name": "setportal",
-    "icon": "yonghuxinxi"
-    },{
-    "title": "scenes上线",
-    "name": "setscenes",
-    "icon": "yonghuxinxi"
-    },{
-    "title": "wj上线",
-    "name": "setWjweb",
-    "icon": "yonghuxinxi"
-    },{
-    "title":"Android版本管理",
-    "name": "setAndroid",
-    "icon": "yonghuxinxi"
-    },{
-    "title":"portalMenu",
-    "name": "setPortalMenu",
-    "icon": "yonghuxinxi"
-    },{
-    "title":"接口统计",
-    "name": "setInterface",
-    "icon": "yonghuxinxi"
-    }]
   },{
-    "title":"广告管理",
-    "show": false,
-    "menus": [{
-      "title": "广告统计",
-      "name": "adCount",
-      "icon": "icons01"
-      },{
-      "title": "广告管理",
-      "name": "adManage",
-      "icon": "icon"
-      },{
-      "title": "合作方管理",
-      "name": "adCooperate",
-      "icon": "yonghuxinxi"
-      },{
-      "title": "时间段管理",
-      "name": "setTime",
-      "icon": "icon"
-      },{
-      "title": "区域管理",
-      "name": "setArea",
-      "icon": "yonghuxinxi"
-      },{
-      "title": "广告区域管理",
-      "name": "setaAdarea",
-      "icon": "yonghuxinxi"
-      },{
-      "title": "ap单位管理",
-      "name": "setUnit",
-      "icon": "yonghuxinxi"
-    }]
-  }],
-  "0": [{
-    "title": "用户管理",
-    "show": true,
-    "menus": [{
-      "title": "用户反馈",
-      "name": "feedback",
-      "icon": "yonghuxinxi"
-    }]
-  },{
-    "title": "运营管理",
-    "show": false,
-    "menus": [{
-      "title": "AP监控",
-      "name": "apReview",
-      "icon": "ap"
-    }]
+    "title": "版本管理",
+    "name": "setVersion",
+    "icon": "yonghuxinxi"
   }]
-}
+}]
