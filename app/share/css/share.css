@@ -19,8 +19,8 @@ html {
 }
 .inner-img {
   display: block;
-  width: 60%;
+  width: 67%;
   height: auto;
-  margin: 0.4rem auto 0.52rem;
+  margin: 0.4rem auto 0;
 }
 
