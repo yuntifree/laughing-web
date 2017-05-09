@@ -3,7 +3,7 @@
     <article class="module width_3_quarter">
       <header class="app_header">
         <div>
-          <button class="btn btn-default btn-sm outline-none">
+          <button class="btn btn-default btn-sm outline-none" @click="addUser">
           <i class="iconfont icon-add"></i>添加用户
           </button>
         </div>
@@ -20,7 +20,7 @@
         <div class="tab_content tab-fixed" v-if="dataReady">
           <template>
             <el-table
-              :data="users"
+              :data="infos"
               :height="tableHeight"
               border>
               <el-table-column
@@ -36,7 +36,7 @@
               <el-table-column
                 inline-template
                 label="头像">
-                <div><img :src="row.headurl"></div>
+                <div><img class="height80" :src="row.headurl"></div>
               </el-table-column>
               <el-table-column
                 inline-template
@@ -73,12 +73,22 @@
       <div class="shade" v-if="modal.addShow" >
         <div class="edit-form" style="width:600px">
           <div class="form-title">{{modal.title}}</div>
-          <el-form :model="addInfo" :rules="rules" ref="ruleForm" label-width="80px">
-            <el-form-item label="昵称" prop="nickname">
-              <el-input v-model.number="addInfo.nickname" placeholder="请填写版本号(数字）"></el-input>
+          <el-form :model="addInfo" ref="ruleForm" label-width="80px">
+            <el-form-item 
+              label="昵称" 
+              prop="nickname"
+              :rules="[
+                { required: true, message: '昵称不能为空', trigger: 'blur'}
+              ]">
+              <el-input v-model.number="addInfo.nickname" placeholder="请填写昵称"
+              ></el-input>
             </el-form-item>
             <el-form-item label="头像">
               <uploader></uploader>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="addPost">确定</el-button>
+              <el-button @click="modal.addShow=false">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -94,8 +104,7 @@
 </template>
 <script>
 import CGI from '../../lib/cgi.js'
-import md5 from 'md5'
-
+import uploader from '../lib/uploader.vue'
 var columns = ['id','手机号','imei','最近在线','备注'];
 var searchParams = {};
 export default {
@@ -110,7 +119,7 @@ export default {
       },
 
       // table data
-      users: [],
+      infos: [],
       columns: columns,
 
       selIdx: -1,
@@ -129,6 +138,9 @@ export default {
         ]
       }
     }
+  },
+  components: {
+    uploader
   },
   computed: {
     tableHeight() {
@@ -167,13 +179,40 @@ export default {
       CGI.post(this.$store.state, 'get_users', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          this.users = data.infos;
+          this.infos = data.infos;
           this.pageCfg.total = data.total;
           this.dataReady = true;
         } else {
           this.alertInfo(resp.desc);
         }
       });
+    },
+    addUser() {
+      this.modal.title = '添加';
+      this.addInfo.nickname = '';
+      this.modal.addShow = true;
+    },
+    addPost() {
+      this.$refs['ruleForm'].validate((valid)=> {
+        if (valid) {
+          var param = {
+            nickname: this.addInfo.nickname,
+            headurl: '1.png'
+          }
+          var _this = this;
+          CGI.post(this.$store.state, 'add_user', param, function(resp) {
+            if (resp.errno == 0) {
+              var u = CGI.clone(param);
+              u.id = resp.data.id;
+              _this.infos.unshift(u);
+              _this.modal.addShow = false;
+            } else {
+              _this.alertInfo(resp.desc);
+              this.modal.addShow = false;
+            }
+          })
+        }
+      })
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

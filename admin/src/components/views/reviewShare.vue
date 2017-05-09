@@ -3,8 +3,11 @@
     <article class="module width_3_quarter">
       <header class="app_header">
         <div>
+          <button type="button" class="btn btn-info btn-left outline-none">
+            审核状态<select v-model="type" @change="getData(true)"><option :value="{ number: 0 }">未审核</option><option :value="{ number: 1 }">审核通过</option><option :value="{ number: 2 }">审核拒绝</option></select>
+          </button>
           <button class="btn btn-default btn-sm outline-none">
-          <i class="iconfont icon-add"></i>添加用户
+            <i class="iconfont icon-add"></i>添加用户
           </button>
         </div>
         <div>
@@ -20,7 +23,7 @@
         <div class="tab_content tab-fixed" v-if="dataReady">
           <template>
             <el-table
-              :data="users"
+              :data="infos"
               :height="tableHeight"
               border>
               <el-table-column
@@ -63,6 +66,16 @@
                 label="分享者头像">
                 <div><img :src="row.headurl"></div>
               </el-table-column>
+              <el-table-column
+                inline-template
+                :context="_self"
+                label="操作"
+                width="100">
+                <span>
+                  <el-button @click="review($index,row,0)" type="text" size="small">通过</el-button>
+                  <el-button @click="review($index,row,1)" type="text" size="small">拒绝</el-button>
+                </span>
+              </el-table-column>
             </el-table>
           </template>
         </div>
@@ -75,19 +88,36 @@
         layout="prev, pager, next, jumper"
         :total="pageCfg.total || 1">
       </el-pagination>
-      <div class="shade" v-if="modal.addShow" >
+      <div class="shade" v-if="modal.reviewShow" >
         <div class="edit-form" style="width:600px">
           <div class="form-title">{{modal.title}}</div>
-          <el-form :model="addInfo" :rules="rules" ref="ruleForm" label-width="80px">
-            <el-form-item label="昵称" prop="nickname">
-              <el-input v-model.number="addInfo.nickname" placeholder="请填写版本号(数字）"></el-input>
+          <el-form :model="reviewInfo" label-width="80px">
+          <el-form-item label="审核" prop="reject">
+              <el-radio-group 
+                placeholder="操作"
+                v-model="reviewInfo.reject">
+                <el-radio label="0">通过</el-radio>
+              </el-radio-group>
             </el-form-item>
-            <el-form-item label="头像">
-              <uploader></uploader>
+            <el-form-item 
+              label="标题" 
+              prop="title">
+              <el-input v-model.number="reviewInfo.title" placeholder="若要修改标题，请填写标题"></el-input>
+            </el-form-item>
+             <el-form-item>
+              <el-button type="primary" @click="reviewPost">确定</el-button>
+              <el-button @click="modal.reviewShow=false">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
       </div>
+      <el-dialog v-model="modal.dialogShow"  :title="dialogCfg.title" size="tiny">
+        <span>{{dialogCfg.text}}</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click.native="modal.dialogShow = false">取 消</el-button>
+          <el-button type="primary" @click.native="chkonline">确 定</el-button>
+        </span>
+      </el-dialog>
       <div v-show="alertShow">
         <el-alert
           :title="alertMsg"
@@ -101,7 +131,6 @@
 import CGI from '../../lib/cgi.js'
 import md5 from 'md5'
 
-var columns = ['id','手机号','imei','最近在线','备注'];
 var searchParams = {};
 export default {
   data() {
@@ -115,23 +144,27 @@ export default {
       },
 
       // table data
-      users: [],
-      columns: columns,
+      infos: [],
 
       selIdx: -1,
       alertShow: false,
       alertMsg: '',
-      addInfo: {
-        nickname: '',
-      },
       modal: {
         title: '',
-        addShow: false,
+        reviewShow: false,
+        dialogShow: false
       },
-      rules: {
-        nickname: [
-          { required: true, message: '请填写版本号', trigger: 'blur'}
-        ]
+      dialogCfg: {
+        title: '',
+        text: ''
+      },
+      type: {
+        number:0
+      },
+      reviewInfo: {
+        title: '',
+        reject: '0',
+        modify: 0
       }
     }
   },
@@ -168,18 +201,53 @@ export default {
       var param = {
         seq: this.pageCfg.start || 0,
         num: 30,
-        type: 0
+        type: this.type.number
       };
       CGI.post(this.$store.state, 'get_shares', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          this.users = data.infos;
+          this.infos = data.infos;
           this.pageCfg.total = data.total;
           this.dataReady = true;
         } else {
           this.alertInfo(resp.desc);
         }
       });
+    },
+    review(idx, row, reject) {
+      this.selIdx = idx;
+      if (!reject) {
+        this.modal.title = '审核通过';
+        this.reviewInfo.reject = '0';
+        this.modal.reviewShow = true;
+      } else {
+        this.dialogCfg.title = '审核拒绝';
+        this.dialogCfg.text = '确认要拒绝' + row.id +'审核吗?';
+        this.modal.dialogShow = true;
+      }
+    },
+    reviewPost() {
+      var param = {
+        id: this.infos[this.selIdx].id,
+        reject: 0
+      }
+      if (this.reviewInfo.title) {
+        param.modify = 1,
+        param.title = this.reviewInfo.title
+      }
+      CGI.post(this.$store.state, 'review_share', param, (resp)=> {
+        if (resp.errno == 0) {
+          this.infos.splice(this.selIdx,1);
+          this.reviewInfo.title = '';
+          this.selIdx = -1;
+          this.modal.reviewShow = false; 
+        } else {
+          this.alertInfo(resp.desc);
+        }
+      })
+    },
+    rejectPost() {
+
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

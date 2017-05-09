@@ -317,6 +317,7 @@ button>i {
 }
 .height80 {
    width: 80px;
+   height: auto;
    max-height: 80px;
    overflow: hidden;
 }
