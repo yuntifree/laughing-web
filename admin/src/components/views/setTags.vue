@@ -44,6 +44,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="图片">
+                <div><img class="height80" :src="row.img" alt=""></div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 :context="_self"
                 label="操作"
                 width="100">
