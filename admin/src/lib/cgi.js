@@ -2,7 +2,7 @@ var ajax = require('./ajax')
 //var ajax = $.ajax;
 
 module.exports = {
-  HOST: __DEV__ ? 'http://120.76.236.185:8081':'',
+  HOST: __DEV__ ? '':'http://120.76.236.185:8081',
   //CGI: '/oss-bin/',
   CGI: '/',
   get(state, action, param, callback) {
@@ -61,7 +61,7 @@ module.exports = {
     p.data = param;
     var self = this;
 
-    var url = this.CGI + action;
+    var url = this.HOST + this.CGI + action;
     try {
       ajax({
         type: 'POST',
