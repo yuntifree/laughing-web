@@ -44,7 +44,6 @@ body {
   width: 238px;
   height: 70px;
   margin: 60px auto 0;
-  background: url('../images/btn.png')
 }
 
 .phone {
@@ -79,6 +78,9 @@ body {
 .btn {
   background: url('../images/btn.png');
   -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
   background-size: cover;
 }
 .btn-press {

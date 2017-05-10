@@ -13,7 +13,7 @@
     <p class="web-title g-tac">Did you laugh today?</p>
     <p class="web-text g-tac">We have been collecting lots of funny videos for you for free<br />
         We hope "Laughing"brings you relaxaion and joy after a busy day of work</p>
-    <a class="web-down" href="" target="_blank"></a>
+    <a class="web-down btn" id="web-btn" href="" target="_blank"></a>
   </div>
   <div class="phone" id="phone">
     <img class="phone-logo" src="images/logo.png">
@@ -54,16 +54,24 @@
 
     if (isPC()) {
       document.getElementById('web').style.display = 'block';
+      document.getElementById('web-btn').addEventListener("mouseenter", mouStart, false);     
+      document.getElementById('web-btn').addEventListener("mouseleave", mouEnd, false); 
     } else {
       document.getElementById('phone').style.display = 'block';
       document.getElementById('phone-btn').addEventListener("touchstart", touStart, false);     
-      function touStart(event){
-        document.getElementById('phone-btn').setAttribute('class', 'phone-down btn-press');
-      }
-      document.getElementById('phone-btn').addEventListener("touchend", touEnd, false); 
-      function touEnd(event){
-        document.getElementById('phone-btn').setAttribute('class', 'phone-down btn');
-      }    
+      document.getElementById('phone-btn').addEventListener("touchend", touEnd, false);      
+    }
+    function mouStart(event) {
+      document.getElementById('web-btn').setAttribute('class', 'web-down btn-press');
+    }
+    function mouEnd(event) {
+      document.getElementById('web-btn').setAttribute('class', 'web-down btn');
+    }
+    function touStart(event){
+      document.getElementById('phone-btn').setAttribute('class', 'phone-down btn-press');
+    }
+    function touEnd(event){
+      document.getElementById('phone-btn').setAttribute('class', 'phone-down btn');
     }
     function isPC() {
       var userAgentInfo = navigator.userAgent;
