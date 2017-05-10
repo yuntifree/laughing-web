@@ -12,7 +12,7 @@
       </div>
     </template>
     <footer class="sidebar-footer">
-      <p><strong>Copyright &copy; 2016 云行智慧</strong></p>
+      <p><strong>Copyright &copy; 2017 laughing</strong></p>
       <p></p>
     </footer>
   </aside>

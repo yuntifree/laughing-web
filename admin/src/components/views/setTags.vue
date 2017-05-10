@@ -162,6 +162,7 @@ export default {
   mounted() {
     if (!this.tableHeight) {
       this.$nextTick(()=> {
+        console.log(this.$refs.tableContent.offsetHeight);
         this.$store.state.tableHeight = this.$refs.tableContent.offsetHeight;
       });
     }

@@ -6,9 +6,6 @@
           <button type="button" class="btn btn-info btn-left outline-none">
             审核状态<select v-model="type" @change="getData(true)"><option :value="{ number: 0 }">未审核</option><option :value="{ number: 1 }">审核通过</option><option :value="{ number: 2 }">审核拒绝</option></select>
           </button>
-          <button class="btn btn-default btn-sm outline-none">
-            <i class="iconfont icon-add"></i>添加用户
-          </button>
         </div>
         <div>
           <div class="quick_search">
@@ -48,6 +45,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="标签">
+                <div>{{row.tags||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 label="描述">
                 <div>{{row.desc||'-'}}</div>
               </el-table-column>
@@ -74,6 +76,7 @@
                 <span>
                   <el-button @click="review($index,row,0)" type="text" size="small">通过</el-button>
                   <el-button @click="review($index,row,1)" type="text" size="small">拒绝</el-button>
+                  <el-button @click="setTag($index,0)" type="text" size="small">设置标签</el-button>
                 </span>
               </el-table-column>
             </el-table>
@@ -105,8 +108,25 @@
               <el-input v-model.number="reviewInfo.title" placeholder="若要修改标题，请填写标题"></el-input>
             </el-form-item>
              <el-form-item>
-              <el-button type="primary" @click="reviewPost">确定</el-button>
-              <el-button @click="modal.reviewShow=false">取消</el-button>
+              <el-button type="primary" @click.native="reviewPost">确定</el-button>
+              <el-button @click.native="modal.reviewShow=false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+      <div class="shade" v-if="modal.tagShow" >
+        <div class="edit-form" style="width:600px">
+          <div class="form-title">{{modal.title}}</div>
+          <el-form label-width="80px">
+            <el-form-item label="标签">
+              <el-checkbox-group v-model="checkedTags">
+                <el-checkbox v-for="tag in tags" :label="tag.id">{{tag.content}}</el-checkbox>
+              </el-checkbox-group>
+              <span class="btn btn-info btn-sm" v-show="tagsMore" @click="setTag('',tagsInfo[tagsInfo.length-1].seq)">点击加载更多</span>
+            </el-form-item>
+             <el-form-item>
+              <el-button type="primary" @click.native="tagPost">确定</el-button>
+              <el-button @click.native="modal.tagShow=false">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -114,8 +134,8 @@
       <el-dialog v-model="modal.dialogShow"  :title="dialogCfg.title" size="tiny">
         <span>{{dialogCfg.text}}</span>
         <span slot="footer" class="dialog-footer">
-          <el-button @click.native="modal.dialogShow = false">取 消</el-button>
-          <el-button type="primary" @click.native="chkonline">确 定</el-button>
+          <el-button type="primary" @click.native="tagPost">确 定</el-button>
+          <el-button @click.native="modal.tagShow = false">取 消</el-button>
         </span>
       </el-dialog>
       <div v-show="alertShow">
@@ -143,16 +163,16 @@ export default {
         limit: 30,
       },
 
-      // table data
       infos: [],
-
+      tags: [],
       selIdx: -1,
       alertShow: false,
       alertMsg: '',
       modal: {
         title: '',
         reviewShow: false,
-        dialogShow: false
+        dialogShow: false,
+        tagShow: false
       },
       dialogCfg: {
         title: '',
@@ -165,7 +185,10 @@ export default {
         title: '',
         reject: '0',
         modify: 0
-      }
+      },
+      tags: [],
+      checkedTags: [],
+      tagsMore: false
     }
   },
   computed: {
@@ -247,7 +270,62 @@ export default {
       })
     },
     rejectPost() {
-
+      var param = {
+        reject: 1,
+        id: this.infos[this.selIdx].id
+      }
+      CGI.post(this.$store.state, 'review_share', param, (resp)=> {
+        if (resp.errno == 0) {
+          this.infos.splice(this.selIdx,1);
+          this.selIdx = -1;
+          this.modal.dialogShow = false; 
+        } else {
+          this.alertInfo(resp.desc);
+        }
+      })
+    },
+    setTag(idx, seq) {
+      this.selIdx = idx;
+      this.modal.title = '设置标签';
+      if (this.tags.length <= 0) {
+        var param = {
+          num: 30,
+          seq: seq
+        }
+        CGI.post(this.$store.state, 'get_tags', param, (resp)=> {
+          if (resp.errno == 0) {
+            this.tags =  this.tags.concat(resp.data.infos);
+            //console.log(this.tagInfo.infos);
+            if (this.tags.length < resp.data.total) {
+              this.tagsMore = true;
+            } else {
+              this.tagsMore = false;
+            }
+          } else {
+            this.alertInfo(resp.desc);
+          }
+        })
+      }
+      this.modal.tagShow = true;
+    },
+    tagPost() {
+      var idx = this.selIdx;
+      var param = {
+        id: this.infos[this.selIdx].id,
+        tags: this.checkedTags
+      }
+      CGI.post(this.$store.state, 'add_share_tags', param, (resp)=> {
+        if (resp.errno === 0) {
+          this.infos[idx].tags = param.tags.join(',');
+          this.selIdx = -1;
+          this.modal.tagShow = false;
+        } else {
+          this.alertInfo(resp.desc);
+        }
+      })
+    },
+    handleChecked(value) {
+      console.log(JSON.stringify(value));
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
