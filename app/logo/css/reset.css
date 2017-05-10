@@ -1,0 +1,139 @@
+/*
+YUI 3.18.1 (build f7e7bcb)
+Copyright 2014 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+@charset "utf-8";
+
+html{
+  color:#000;
+  background:#f7f7f7;
+  font-size: 100px;
+}
+
+body{
+  font-size: .24rem;
+}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, b,cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video,label{
+  margin:0;
+  padding:0;
+ /*  font-family: "Microsoft YaHei","微软雅黑","宋体","Arial"; */
+ font-family: PingFangSC,'Microsoft YaHei',Helvetica,Arial,sans-serif;
+  tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  font-weight: normal;
+}
+*{
+  margin:0;
+  padding:0;
+  font-family: 'Microsoft YaHei',Helvetica,Arial,sans-serif;
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var{
+  font-style:normal;
+  font-weight:normal;
+}
+ol,ul,li{
+  list-style:none;
+}
+caption,th{
+  text-align:left;
+}
+h1,h2,h3,h4,h5,h6{
+  font-size:100%;
+  font-weight:normal;
+}
+q:before,q:after{
+  content:'';
+}
+abbr,acronym{
+  border:0;
+  font-variant:normal;
+}
+sup{
+  vertical-align:text-top;
+}
+sub{
+  vertical-align:text-bottom;
+}
+
+a,i,em{
+  font-style: normal;
+  text-decoration: none;
+}
+input,textarea,select,button{
+  border:0;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+  resize:none;
+  -webkit-appearance: none;
+}
+
+
+legend{
+  color:#000;
+}
+#yui3-css-stamp.cssreset{ display:none;}
+/*清除浮动*/
+.g-cl{clear: both;}
+
+.g-clearfix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
+.g-clearfix {
+  zoom: 1;
+}
+
+.g-font12 {
+  font-size: 12px;
+}
+
+.g-font28 {
+  font-size: .28rem;
+}
+
+.g-fl{
+  float: left;
+}
+
+.g-fr{
+  float: right;
+}
+
+.g-tal{
+  text-align: left;
+}
+.g-tac {
+    text-align: center;
+}
+
+.g-tar{
+  text-align: right;
+}
+
+.t-right {
+    text-align: right;
+}
+
