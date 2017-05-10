@@ -56,9 +56,6 @@
       document.getElementById('web').style.display = 'block';
     } else {
       document.getElementById('phone').style.display = 'block';
-      /*document.getElementById('phone-btn').ontouchStart = function() {
-        console.log(1);
-      }*/
       document.getElementById('phone-btn').addEventListener("touchstart", touStart, false);     
       function touStart(event){
         document.getElementById('phone-btn').setAttribute('class', 'phone-down btn-press');
