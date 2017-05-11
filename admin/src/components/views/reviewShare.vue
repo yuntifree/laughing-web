@@ -46,7 +46,7 @@
               <el-table-column
                 inline-template
                 label="标签">
-                <div>{{row.tags||'-'}}</div>
+                <div>{{row.tag||'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
@@ -95,9 +95,8 @@
         <div class="edit-form" style="width:600px">
           <div class="form-title">{{modal.title}}</div>
           <el-form :model="reviewInfo" label-width="80px">
-          <el-form-item label="审核" prop="reject">
+            <el-form-item label="审核" prop="reject">
               <el-radio-group 
-                placeholder="操作"
                 v-model="reviewInfo.reject">
                 <el-radio label="0">通过</el-radio>
               </el-radio-group>

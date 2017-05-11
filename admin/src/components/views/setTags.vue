@@ -44,6 +44,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="热门推荐">
+                <div>{{row.recommend ? '是':'否' || '-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 label="图片">
                 <div><img class="height80" :src="row.img" alt=""></div>
               </el-table-column>
@@ -70,9 +75,16 @@
       </el-pagination>
       <div class="shade" v-if="modal.addShow" >
         <div class="edit-form" style="width:600px">
-          <el-form ref="form" :model="addInfo" label-width="80px">
-            <el-form-item label="content">
-              <el-input v-model.trim="addInfo.content" placeholder="多个标签请用','分隔"></el-input>
+          <el-form ref="ruleForm" :model="addInfo" :rules="rules" label-width="100px">
+            <el-form-item label="content" prop="content">
+              <el-input v-model.trim="addInfo.content" placeholder="请填写标签"></el-input>
+            </el-form-item>
+            <el-form-item label="热门推荐" prop="recommend">
+              <el-radio-group 
+                v-model="addInfo.recommend">
+                <el-radio label="1">是</el-radio>
+                <el-radio label="0">否</el-radio>
+              </el-radio-group>
             </el-form-item>
             <el-form-item label="img">
               <uploader></uploader>
@@ -135,10 +147,19 @@ export default {
       checkedTags: [],
       addInfo: {
         content: '',
+        recommend: '0'
       },
       tagsInfo: {},
       alertShow: false,
       alertMsg: '',
+      rules: {
+        content: [
+          { required: true, message: '请填写标签', trigger: 'blur'}
+        ],
+        recommend: [
+          { required: true, message: '请选择是否热门推荐', trigger: 'change' }
+        ]
+      }
     }
   },
   components: {
@@ -201,29 +222,29 @@ export default {
     },
     addtags() {
       CGI.objClear(this.addInfo);
+      this.addInfo.recommend = '0';
       this.modal.addShow = true;
     },
     addPost() {
-      if (this.addInfo.content.length <= 0) {
-        this.alertInfo('请输入标签名');
-        return;
-      }
-      var param = {
-        content: this.addInfo.content,
-        //img: this.$store.state.imgUrl[0]
-        img: '1.png'
-      }
-      console.log(JSON.stringify(param));
-      CGI.post(this.$store.state, 'add_tag', param, (resp)=> {
-        if (resp.errno == 0) {
-          this.alertInfo('新增成功');
-          this.tags.unshift(this.addInfo);
-          this.tags[0].id = resp.data.id;
-          this.$store.state.imgUrl = [];
-          this.modal.addShow = false;
-        } else {
-          this.alertInfo(resp.desc);
-        }
+      var _this = this;
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          var param = CGI.clone(_this.addInfo);
+          param.img = '1.png';//img: this.$store.state.imgUrl[0]
+          param.recommend = ~~param.recommend;
+          console.log(JSON.stringify(param));
+          CGI.post(this.$store.state, 'add_tag', param, (resp)=> {
+            if (resp.errno == 0) {
+              this.alertInfo('新增成功');
+              this.tags.unshift(this.addInfo);
+              this.tags[0].id = resp.data.id;
+              this.$store.state.imgUrl = [];
+              this.modal.addShow = false;
+            } else {
+              this.alertInfo(resp.desc);
+            }
+          })
+        }//else {}
       })
     },
     deltags(idx, row) {
