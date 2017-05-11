@@ -1,0 +1,96 @@
+html,body {
+  width: 100%;
+  min-height: 100%;
+  background-color: #fff;
+}
+.container {
+  width: 100%;
+  height: 100%;
+}
+.info-video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.info-text {
+  width: 92%;
+  height: auto;
+  margin: 0.6rem auto 0.28rem;
+  font-size: 0.36rem;
+  line-height: 0.48rem;
+  color: rgb(36,36,39);
+}
+.info-tag {
+  color: rgb(36,108,205);
+}
+.info-val {
+  width: 92%;
+  height: auto;
+  margin: 0 auto;
+}
+.info-val img {
+  width: 0.36rem;
+  height: 0.36rem;
+}
+.info-val span {
+  line-height: 0.36rem;
+  font-size: 0.28rem;
+  color: rgb(184,178,180);
+  margin-left: 0.2rem;
+}
+.download {
+  width: 100%;
+  height: auto;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 0.34rem 0.4rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.down-logo {
+  width: 0.92rem;
+  height: 0.92rem;
+  margin-right: 0.2rem;
+}
+.down-logo img {
+  width: 100%;
+  height: 100%;
+}
+.down-name {
+  font-size: 0.4rem;
+  color: #fff;
+}
+.down-desc {
+  margin-top: 0.1rem;
+  font-size: 0.28rem;
+  color: #fff;
+}
+.down-url {
+  display: block;
+  margin-top: 0.08rem;
+  width: 1.84rem;
+  height: 0.76rem;
+  border-radius: 0.5rem;
+  line-height: 0.76rem;
+  font-size: 0.32rem;
+  color: #000;
+  background-color: #fff;
+}
+.tip-info {
+  width: 140px;
+  padding: 10px;
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  margin-left: -70px;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #6b6b6b\0;
+  +background-color: #6b6b6b;
+  color: #fff;
+  border-radius: 5px;
+  display: none;
+}
+
+
+

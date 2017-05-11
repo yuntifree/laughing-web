@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/videoshare.css">
+</head>
+
+<body>
+    <div class="container" id="info">
+    </div>
+    <div class="download g-clearfix">
+        <dl class="g-fl g-clearfix">
+            <dt class="g-fl down-logo"><img src="images/logo.png"></dt>
+            <dd class="g-fl">
+                <h2 class="down-name">lauging</h2>
+                <p class="down-desc">Did you laugh today？</p>
+            </dd>
+        </dl>
+        <button class="g-fr down-url">下载App</button>
+    </div>
+    <p class="tip-info g-tac"></p>
+    <script type="text/html" id="tplInfo">
+       <video class="info-video" loop autoplay="true" controls="true">
+          <source src="{{dst}}">
+          您的浏览器不支持 HTML5 video 标签。
+        </video>
+        <p class="info-text">{{each tags tag}}<span class="info-tag">{{tag.content}}</span>{{/each}} Sometimes I wonder what it would be like to be a dog  </p>
+        <p class="info-val">
+            <!-- <% for(var i = 0; i < smile; i++){ %>
+                <%= img class="g-fl" src="images/xiaodian.png" alt=""%>
+            <% } %> -->
+            {{each smile}}
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+            {{/each}}
+            <span class="g-fl">11098views</span>
+        </p> 
+    </script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/template.js"></script>
+    <script type="text/javascript" src="js/videoshare.js"></script>
+    </script>
+</body>
+
+</html>
