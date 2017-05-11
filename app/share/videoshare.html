@@ -28,15 +28,30 @@
           <source src="{{dst}}">
           您的浏览器不支持 HTML5 video 标签。
         </video>
-        <p class="info-text">{{each tags tag}}<span class="info-tag">{{tag.content}}</span>{{/each}} Sometimes I wonder what it would be like to be a dog  </p>
+        <p class="info-text">{{each tags tag}}<span class="info-tag">{{tag.content}}</span>{{/each}} {{title}}</p>
         <p class="info-val">
-            <!-- <% for(var i = 0; i < smile; i++){ %>
-                <%= img class="g-fl" src="images/xiaodian.png" alt=""%>
-            <% } %> -->
-            {{each smile}}
+            {{if smile==1}}
                 <img class="g-fl" src="images/xiaodian.png" alt="">
-            {{/each}}
-            <span class="g-fl">11098views</span>
+            {{else if smile==2}}
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+            {{else if smile==3}}
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+            {{else if smile==4}}
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+            {{else if smile==5}}
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+                <img class="g-fl" src="images/xiaodian.png" alt="">
+            {{/if}}
+            <span class="g-fl">{{views}}views</span>
         </p> 
     </script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -52,9 +67,9 @@
             id: id,
             nonce:  hex_md5(ts.toString()+Math.random(0,1000000).toString()),
         }
-        CGI.post('get_share_detail',{id: id}, function(resp) {
+        CGI.post('get_share_detail',param, function(resp) {
           if (resp.errno === 0) {
-            var data = resp.data;
+            //var data = resp.data;
             $('.container').append(template('tplInfo', data));
           } else {
             tipShow(resp.desc);
