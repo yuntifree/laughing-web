@@ -4,7 +4,6 @@
   var id = ~~(query().id);
   var data = {};
   post('get_share_detail',{id: id}, function(resp) {
-    console.log(1);
     if (resp.errno === 0) {
       data = resp.data;
       $('.container').append(template('tplInfo', data));
