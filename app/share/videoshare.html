@@ -42,13 +42,19 @@
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/template.js"></script>
     <script type="text/javascript" src="js/cgi.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
     <script type="text/javascript">
         adapt();
         var id = ~~(CGI.query().id);
-        var data = {};
+        var ts = new Date().getTime()
+        var param = {
+            ts: ts,
+            id: id,
+            nonce:  hex_md5(ts.toString()+Math.random(0,1000000).toString()),
+        }
         CGI.post('get_share_detail',{id: id}, function(resp) {
           if (resp.errno === 0) {
-            data = resp.data;
+            var data = resp.data;
             $('.container').append(template('tplInfo', data));
           } else {
             tipShow(resp.desc);
