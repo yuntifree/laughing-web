@@ -125,39 +125,22 @@ module.exports = {
     }
   },
 
-  PUT(path, auth, len, callback) {
-
+  postform(state, action, data, callback) {
+    var url = this.HOST + this.CGI + action
+    alert(data)
     try {
-      ajax({
-        type: 'PUT',
-        url: path,
-        contentLength: len,
-        authorization: auth,
-        contentType: 'application/json',
-        dataType: 'json',
-        timeout: 10000,
-        data: {},
-        success: function(data) {
-          if (data.errno === 101) {
-            if (state.logined)
-              self.logout(state);
-          }
-          callback(data);
-        },
-        error: function() {
-          callback({
-            errno: 99,
-            desc: '网络有些慢，请稍后重试~'
-          });
-        }
-      });
+      this.setCookie('u', state.uid, 0)
+      this.setCookie('s', state.token, 0)
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      xhr.onload = function() {
+        alert("上传完成!");
+      };
+      xhr.send(data)
     } catch (e) {
-      if (__DEV__) {
-        alert(JSON.stringify(e));
-      }
+      alert(e)
     }
   },
-
   login(state, data, sidebar) {
     //console.log(state);
     state.uid = data.uid;
@@ -427,13 +410,13 @@ module.exports = {
       number: true,
       required: true
     }
-  }
+  },
 
-  // setCookie(key, val, min) {
-  //     var t = new Date();
-  //     t.setTime(t.getTime() + min * 60 * 1000);
-  //     document.cookie = key + "=" + escape(val) + ";path=/" + (min === 0 ? "" : ";expires=" + t.toGMTString());
-  // },
+  setCookie(key, val, min) {
+      var t = new Date();
+      t.setTime(t.getTime() + min * 60 * 1000);
+      document.cookie = key + "=" + val + ";path=/" + (min === 0 ? "" : ";expires=" + t.toGMTString());
+  },
 
   // //读取cookie
   // getCookie(name) {
