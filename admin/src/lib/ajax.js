@@ -34,11 +34,9 @@ var ajax = module.exports = function(options){
   serializeData(settings)
   var mime = settings.accepts[dataType],
       baseHeaders = { },
-      //protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : window.location.protocol,
-      protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : '',
+      protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : window.location.protocol,
       xhr = ajax.settings.xhr(), abortTimeout
   if (!settings.crossDomain) baseHeaders['X-Requested-With'] = 'XMLHttpRequest'
-  console.log(settings.url);
   if (mime) {
     baseHeaders['Accept'] = mime
     if (mime.indexOf(',') > -1) mime = mime.split(',', 2)[0]
@@ -248,11 +246,6 @@ ajax.post = function(url, data, success, dataType){
   if (type.isFunction(data)) dataType = dataType || success, success = data, data = null
   return ajax({ type: 'POST', url: url, data: data, success: success, dataType: dataType })
 }
-ajax.put = function(url, data, success, dataType){
-  if (type.isFunction(data)) dataType = dataType || success, success = data, data = null
-  return ajax({ type: 'PUT', url: url, data: data, success: success, dataType: dataType })
-}
-
 
 ajax.getJSON = function(url, success){
   return ajax({ url: url, success: success, dataType: 'json' })

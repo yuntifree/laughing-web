@@ -45,6 +45,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="热推">
+                <div>{{row.recommend ? '是' : '否'||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 label="粉丝数">
                 <div>{{row.followers||'-'}}</div>
               </el-table-column>
@@ -57,6 +62,15 @@
                 inline-template
                 label="注册时间">
                 <div>{{row.ctime||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                :context="_self"
+                label="操作"
+                width="100">
+                <span>
+                  <el-button @click="editUser($index,row)" type="text" size="small">编辑</el-button>
+                </span>
               </el-table-column>
             </el-table>
           </template>
@@ -83,11 +97,19 @@
               <el-input v-model.number="addInfo.nickname" placeholder="请填写昵称"
               ></el-input>
             </el-form-item>
+            <el-form-item label="热门推荐" prop="recommend">
+              <el-radio-group 
+                v-model="addInfo.recommend">
+                <el-radio label="1">是</el-radio>
+                <el-radio label="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
             <el-form-item label="头像">
               <uploader></uploader>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addPost">确定</el-button>
+              <el-button v-if="modal.editShow" type="primary" @click="editPost">确定</el-button>
+              <el-button v-else type="primary" @click="addPost">确定</el-button>
               <el-button @click="modal.addShow=false">取消</el-button>
             </el-form-item>
           </el-form>
@@ -127,14 +149,20 @@ export default {
       alertMsg: '',
       addInfo: {
         nickname: '',
+        recommend: '0',
+        headurl: ''
       },
       modal: {
         title: '',
         addShow: false,
+        editShow: false
       },
       rules: {
         nickname: [
           { required: true, message: '请填写版本号', trigger: 'blur'}
+        ],
+        recommend: [
+          { required: true, message: '请选择是否热门推荐', trigger: 'change'}
         ]
       }
     }
@@ -192,6 +220,7 @@ export default {
     addUser() {
       this.modal.title = '添加';
       this.addInfo.nickname = '';
+      this.addInfo.recommend = '0';
       this.modal.addShow = true;
     },
     addPost() {
@@ -199,9 +228,10 @@ export default {
         if (valid) {
           var param = {
             nickname: this.addInfo.nickname,
-            headurl: '1.png'
+            headurl: this.$store.store.imgUrl
           }
           var _this = this;
+          console.log('add')
           CGI.post(this.$store.state, 'add_user', param, function(resp) {
             if (resp.errno == 0) {
               var u = CGI.clone(param);
@@ -213,6 +243,44 @@ export default {
               this.modal.addShow = false;
             }
           })
+        }
+      })
+    },
+    editUser(idx,row) {
+      this.selIdx = idx;
+      this.modal.title = '编辑';
+      var u = CGI.clone(row);
+      if (u.recommend) {
+        u.recommend = u.recommend.toString();
+      } else {
+        u.recommend = '0';
+      }
+      CGI.extend(this.addInfo, u);
+      this.modal.editShow = true;
+      this.modal.addShow = true;
+    },
+    editPost() {
+      var _this = this;
+      this.$refs['ruleForm'].validate((valid)=> {
+        if (valid) {
+          var param = CGI.clone(this.addInfo);
+          param.recommend = ~~param.recommend;
+          param.id = this.infos[this.selIdx].id;
+          if (this.$store.state.imgUrl.length>0 && param.headurl !== this.$store.state.imgUrl){
+            param.headurl = this.$store.state.imgUrl;
+          }
+          console.log(param.headurl);
+          CGI.post(this.$store.state, 'mod_user', param, function(resp) {
+            if (resp.errno == 0) {
+              _this.getData(true);
+              _this.$store.state.imgUrl = '';
+              _this.modal.editShow = false;
+              _this.modal.addShow = false;
+              _this.selIdx = -1;
+            } else {
+              _this.alertInfo(resp.desc);
+            }
+          }) 
         }
       })
     },
