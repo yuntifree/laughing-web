@@ -127,18 +127,28 @@ module.exports = {
 
   postform(state, action, data, callback) {
     var url = this.HOST + this.CGI + action
-    alert(data)
     try {
       this.setCookie('u', state.uid, 0)
       this.setCookie('s', state.token, 0)
       var xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
-      xhr.onload = function() {
-        alert("上传完成!");
-      };
+      xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4) {
+          var result, error = false
+          if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+            result = xhr.responseText
+            try {
+              var obj = JSON.parse(result)
+              callback(obj)
+            } catch (e) {
+              error = e
+            }
+          }
+        }
+      }
       xhr.send(data)
     } catch (e) {
-      alert(e)
+      console.log(e)
     }
   },
   login(state, data, sidebar) {

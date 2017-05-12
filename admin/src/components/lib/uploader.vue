@@ -34,17 +34,16 @@ export default {
   },
   methods: {
     postFile() {
-      alert(1)
       var file = document.getElementById("file").files[0]  //文件对象
       var formData = new FormData();
       formData.append("file", file);
       formData.append("name", file.name);
 
       CGI.postform(this.$store.state, 'upload_img', formData, (resp) => {
-          alert(resp)
+        alert(JSON.stringify(resp))
           var obj = resp.data;
           var name = obj['filename']
-          alert(name)
+          this.$store.state.imgUrl = name
       })
     },
   }
