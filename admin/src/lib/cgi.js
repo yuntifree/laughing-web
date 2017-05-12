@@ -109,10 +109,6 @@ module.exports = {
         timeout: 10000,
         data: JSON.stringify(p),
         success: function(data) {
-          /*if (data.errno === 101) {
-            if (state.logined)
-              self.logout(state);
-          }*/
           callback(data);
         },
         error: function() {
@@ -130,10 +126,7 @@ module.exports = {
   },
 
   PUT(path, auth, len, callback) {
-    var self = this;
 
-    //var url = this.HOST + this.CGI + action;
-    console.log(path);
     try {
       ajax({
         type: 'PUT',
@@ -145,10 +138,10 @@ module.exports = {
         timeout: 10000,
         data: {},
         success: function(data) {
-          /*if (data.errno === 101) {
+          if (data.errno === 101) {
             if (state.logined)
               self.logout(state);
-          }*/
+          }
           callback(data);
         },
         error: function() {
@@ -164,7 +157,6 @@ module.exports = {
       }
     }
   },
-
 
   login(state, data, sidebar) {
     //console.log(state);

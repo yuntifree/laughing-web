@@ -23,25 +23,22 @@ var ajax = module.exports = function(options){
   for (key in ajax.settings) if (settings[key] === undefined) settings[key] = ajax.settings[key]
 
   ajaxStart(settings)
-
   if (!settings.crossDomain) settings.crossDomain = /^([\w-]+:)?\/\/([^\/]+)/.test(settings.url) &&
     RegExp.$2 != window.location.host
-
   var dataType = settings.dataType, hasPlaceholder = /=\?/.test(settings.url)
   if (dataType == 'jsonp' || hasPlaceholder) {
     if (!hasPlaceholder) settings.url = appendQuery(settings.url, 'callback=?')
     return ajax.JSONP(settings)
   }
-
   if (!settings.url) settings.url = window.location.toString()
   serializeData(settings)
-
   var mime = settings.accepts[dataType],
       baseHeaders = { },
-      protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : window.location.protocol,
+      //protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : window.location.protocol,
+      protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : '',
       xhr = ajax.settings.xhr(), abortTimeout
-
   if (!settings.crossDomain) baseHeaders['X-Requested-With'] = 'XMLHttpRequest'
+  console.log(settings.url);
   if (mime) {
     baseHeaders['Accept'] = mime
     if (mime.indexOf(',') > -1) mime = mime.split(',', 2)[0]
@@ -74,8 +71,8 @@ var ajax = module.exports = function(options){
   }
 
   var async = 'async' in settings ? settings.async : true
-  xhr.open(settings.type, settings.url, async)
-
+ // xhr.open(settings.type, settings.url, async)
+   xhr.open(settings.type, settings.url, async)
   for (name in settings.headers) xhr.setRequestHeader(name, settings.headers[name])
 
   if (ajaxBeforeSend(xhr, settings) === false) {
@@ -251,6 +248,11 @@ ajax.post = function(url, data, success, dataType){
   if (type.isFunction(data)) dataType = dataType || success, success = data, data = null
   return ajax({ type: 'POST', url: url, data: data, success: success, dataType: dataType })
 }
+ajax.put = function(url, data, success, dataType){
+  if (type.isFunction(data)) dataType = dataType || success, success = data, data = null
+  return ajax({ type: 'PUT', url: url, data: data, success: success, dataType: dataType })
+}
+
 
 ajax.getJSON = function(url, success){
   return ajax({ url: url, success: success, dataType: 'json' })

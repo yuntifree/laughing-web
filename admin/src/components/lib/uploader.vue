@@ -55,12 +55,12 @@ export default {
               self.prevnames = self.filenames;
               CGI.post(self.$store.state, 'apply_img_upload', {
                 // debug: 1,
-                formats: get_suffix(self.filenames), size: 10
+                formats: get_suffix(self.filenames), spostize: 10
               }, (resp) => {
                 if (resp.errno === 0) {
                   obj = resp.data;
                   uploadName = obj.path;
-                  doUpload(obj.path, obj.auth,self.size);
+                  doUpload(obj.path,obj.auth,self.size);
                 }
               })
               return false;
@@ -79,7 +79,6 @@ export default {
             plupload.each(files, function(file) {
               document.getElementById('ossfile').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>' + '<div class="progress"><div  class="progress-bar progress-bar-info progress-bar-striped" style="width: 0%"></div></div>' + '</div>';
               self.filenames = file.name;
-              console.log(file.size);
               self.size = file.size;
             });
           },
@@ -118,10 +117,15 @@ export default {
   }
 }
 
-function doUpload(path, auth, len) {
+function doUpload(path,auth,len) {
   CGI.PUT(path, auth, len, function (resp) {
     console.log(resp);
-  })           
+  })
+  /*uploader.setOption({
+    'url': obj['path'],
+    'type': 'put',
+    'authorization': obj['authorization']
+  });*/
 }
 
 function get_suffix(filenames) {
