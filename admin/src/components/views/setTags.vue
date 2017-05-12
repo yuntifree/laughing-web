@@ -204,7 +204,9 @@ export default {
       CGI.post(this.$store.state, 'get_tags', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          this.tags = data.infos;
+          if (data.infos) {
+            this.tags = data.infos;
+          }
           this.pageCfg.total = data.total;
           this.dataReady = true;
         } else {

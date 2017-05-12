@@ -81,7 +81,7 @@
                 label="操作"
                 width="100">
                 <span>
-                  <el-button @click="editAct($index,row)" type="text" size="small">删除</el-button>
+                  <el-button type="text" size="small">删除</el-button>
                 </span>
               </el-table-column>
             </el-table>
@@ -99,7 +99,7 @@
       <div class="shade" v-if="modal.addShow" >
         <div class="edit-form" style="width:600px">
           <div class="form-title">{{modal.title}}</div>
-          <el-form :model="addInfo" :rules="rules" ref="ruleForm" label-width="80px">
+          <el-form :model="addInfo" :rules="rules" ref="ruleForm" label-width="100px">
             <el-form-item label="版本号" prop="version">
               <el-input v-model.number="addInfo.version" placeholder="请填写版本号(数字）"></el-input>
             </el-form-item>
@@ -253,7 +253,9 @@ export default {
       CGI.post(this.$store.state, 'get_versions', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          this.infos = data.infos;
+          if (data.infos) {
+            this.infos = data.infos;
+          }
           this.pageCfg.total = data.total;
           this.dataReady = true;
         } else {
@@ -289,7 +291,6 @@ export default {
                 _this.alertInfo('新增成功');
                 var u = CGI.clone(_this.addInfo);
                 u.id= resp.data.id;
-                console.log(JSON.stringify(u))
                 _this.infos.unshift(u);        
                 _this.modal.addShow = false;
             } else {

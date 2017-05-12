@@ -179,7 +179,9 @@ export default {
       CGI.post(this.$store.state, 'get_users', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          this.infos = data.infos;
+          if (data.infos) {
+            this.infos = data.infos;
+          }
           this.pageCfg.total = data.total;
           this.dataReady = true;
         } else {
