@@ -46,7 +46,7 @@
               <el-table-column
                 inline-template
                 label="标签">
-                <div>{{row.tag||'-'}}</div>
+                <div>{{row.tags||'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template

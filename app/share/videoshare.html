@@ -69,7 +69,7 @@
         }
         CGI.post('get_share_detail',param, function(resp) {
           if (resp.errno === 0) {
-            //var data = resp.data;
+            var data = resp.data;
             $('.container').append(template('tplInfo', data));
           } else {
             tipShow(resp.desc);
