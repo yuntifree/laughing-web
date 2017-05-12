@@ -12,15 +12,16 @@
 <script>
 import CGI from '../../lib/cgi.js'
 
-var uploadName = [];
+var uploadName = '';
 var obj = {};
 
 export default {
   data() {
     return {
-      filenames: [],
-      prevnames:[],
+      filenames: '',
+      prevnames:'',
       upDone: 0,
+      size: 0
     }
   },
   props: {
@@ -45,23 +46,21 @@ export default {
         container: document.getElementById('container'),
         flash_swf_url: 'lib/plupload-2.1.2/js/Moxie.swf',
         silverlight_xap_url: 'lib/plupload-2.1.2/js/Moxie.xap',
-        url: 'http://oss.aliyuncs.com',
+        url: 'laugh.us-ca.ufileos.com',
         init: {
           PostInit() {
-            document.getElementById('postfiles').onclick = function() {
+            document.getElementById('postfiles').onclick = function(file) {
               // 这里偷懒少了超时逻辑，必要的时候补回来
               //self.filenames = makeParam(self.prevnames, self.filenames);
               self.prevnames = self.filenames;
-              CGI.post(self.$store.state, 'get_oss_image_policy', {
+              CGI.post(self.$store.state, 'apply_img_upload', {
                 // debug: 1,
-                formats: get_suffix(self.filenames)
+                formats: get_suffix(self.filenames), size: 10
               }, (resp) => {
                 if (resp.errno === 0) {
                   obj = resp.data;
-                  obj['names'].forEach(function(val) {
-                    uploadName.push(val)
-                  })
-                  doUpload(uploader, 0);
+                  uploadName = obj.path;
+                  doUpload(obj.path, obj.auth,self.size);
                 }
               })
               return false;
@@ -72,15 +71,16 @@ export default {
             //console.log(self.filenames.length + ','+self.upDone);
             if (self.filenames.length == self.upDone) {
               var inner = document.getElementById('ossfile').innerHTML = '';
-              self.filenames = [];
-              uploadName = [];
-              self.$store.state.imgUrl = [];
+              self.filenames = '';
+              uploadName = '';
+              self.$store.state.imgUrl = '';
               self.upDone = 0;
             }
-            
             plupload.each(files, function(file) {
               document.getElementById('ossfile').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>' + '<div class="progress"><div  class="progress-bar progress-bar-info progress-bar-striped" style="width: 0%"></div></div>' + '</div>';
-              self.filenames.push(file.name);
+              self.filenames = file.name;
+              console.log(file.size);
+              self.size = file.size;
             });
           },
 
@@ -99,11 +99,6 @@ export default {
               document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '完成';
               self.upDone++;
               if (self.filenames.length == self.upDone) {
-                console.log(uploadName);
-                uploadName.forEach(function(val, idx) {
-                  uploadName[idx] = 'http://img.yunxingzh.com/' + val;
-                })
-                console.log(uploadName);
                 self.$store.state.imgUrl = uploadName;                
               } else {
                 doUpload(uploader, self.upDone);
@@ -123,32 +118,18 @@ export default {
   }
 }
 
-function doUpload(uploader, idx) {
-  var new_multipart_params = {
-    'key': uploadName[idx],
-    'policy': obj['policy'],
-    'OSSAccessKeyId': obj['accessid'],
-    'success_action_status': '200', //让服务端返回200,不然，默认会返回204
-    'callback': obj['callback'],
-    'signature': obj['signature'],
-  };
-  uploader.setOption({
-    'url': obj['host'],
-    'multipart_params': new_multipart_params
-  });
-  uploader.start();            
+function doUpload(path, auth, len) {
+  CGI.PUT(path, auth, len, function (resp) {
+    console.log(resp);
+  })           
 }
 
 function get_suffix(filenames) {
-  var pos,file;
-  var suffix = [];
-  filenames.forEach(function(val) {
-    pos = val.lastIndexOf('.');
-    if (pos != -1) {
-      file = val.substring(pos + 1);
-      suffix.push(file);
-    }
-  });
+  var suffix = '';
+  var pos = filenames.lastIndexOf('.');
+  if (pos != -1) {
+    suffix = filenames.substring(pos + 1);
+  }
   return suffix;
 }
 // function makeParam(oldVal, newVal) {

@@ -90,6 +90,81 @@ module.exports = {
       }
     }
   },
+  post(state, action, param, callback) {
+    var p = {
+      uid: ~~(state.uid),
+      token: state.token,
+    };
+
+    p.data = param;
+    var self = this;
+
+    var url = this.HOST + this.CGI + action;
+    try {
+      ajax({
+        type: 'POST',
+        url: url,
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        data: JSON.stringify(p),
+        success: function(data) {
+          /*if (data.errno === 101) {
+            if (state.logined)
+              self.logout(state);
+          }*/
+          callback(data);
+        },
+        error: function() {
+          callback({
+            errno: 99,
+            desc: '网络有些慢，请稍后重试~'
+          });
+        }
+      });
+    } catch (e) {
+      if (__DEV__) {
+        alert(JSON.stringify(e));
+      }
+    }
+  },
+
+  PUT(path, auth, len, callback) {
+    var self = this;
+
+    //var url = this.HOST + this.CGI + action;
+    console.log(path);
+    try {
+      ajax({
+        type: 'PUT',
+        url: path,
+        contentLength: len,
+        authorization: auth,
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        data: {},
+        success: function(data) {
+          /*if (data.errno === 101) {
+            if (state.logined)
+              self.logout(state);
+          }*/
+          callback(data);
+        },
+        error: function() {
+          callback({
+            errno: 99,
+            desc: '网络有些慢，请稍后重试~'
+          });
+        }
+      });
+    } catch (e) {
+      if (__DEV__) {
+        alert(JSON.stringify(e));
+      }
+    }
+  },
+
 
   login(state, data, sidebar) {
     //console.log(state);
