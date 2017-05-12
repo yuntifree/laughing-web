@@ -269,10 +269,10 @@ export default {
           if (this.$store.state.imgUrl.length>0 && param.headurl !== this.$store.state.imgUrl){
             param.headurl = this.$store.state.imgUrl;
           }
+          console.log(param.headurl);
           CGI.post(this.$store.state, 'mod_user', param, function(resp) {
             if (resp.errno == 0) {
               _this.getData(true);
-              //CGI.extend(_this.infos[_this.selIdx], param);
               _this.$store.state.imgUrl = '';
               _this.modal.editShow = false;
               _this.modal.addShow = false;
