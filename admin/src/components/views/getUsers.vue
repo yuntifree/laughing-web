@@ -228,7 +228,7 @@ export default {
         if (valid) {
           var param = {
             nickname: this.addInfo.nickname,
-            headurl: '1.png'
+            headurl: this.$store.store.imgUrl
           }
           var _this = this;
           console.log('add')

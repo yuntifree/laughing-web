@@ -273,7 +273,7 @@ export default {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
           var param = CGI.clone(_this.addInfo);
-          param.img = '1.png';//img: this.$store.state.imgUrl[0]
+          param.img = this.$store.state.imgUrl;
           param.recommend = ~~param.recommend;
           console.log(JSON.stringify(param));
           CGI.post(this.$store.state, 'add_tag', param, (resp)=> {
