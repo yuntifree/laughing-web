@@ -228,16 +228,20 @@ export default {
         if (valid) {
             var param = CGI.clone(this.addInfo);
             param.recommend = ~~param.recommend;
-          var _this = this;
+            param.headurl = this.$store.state.imgUrl;
+            var _this = this;
           CGI.post(this.$store.state, 'add_user', param, function(resp) {
             if (resp.errno == 0) {
-              var u = CGI.clone(_this.addInfo);
-              u.id = resp.data.id;
-              _this.infos.unshift(u);
+              _this.$store.state.imgUrl = '';
+              //var u = CGI.clone(_this.addInfo);
+              //u.id = resp.data.id;
+              //u.headUrl = 'http://laugh.us-ca.ufileos.com' +u.headUrl;
+              //_this.infos.unshift(u);
+              _this.getData(true);
               _this.modal.addShow = false;
             } else {
               _this.alertInfo(resp.desc);
-              this.modal.addShow = false;
+              _this.modal.addShow = false;
             }
           })
         }

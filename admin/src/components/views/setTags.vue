@@ -276,15 +276,16 @@ export default {
           param.img = this.$store.state.imgUrl;
           param.recommend = ~~param.recommend;
           console.log(JSON.stringify(param));
-          CGI.post(this.$store.state, 'add_tag', param, (resp)=> {
+          CGI.post(this.$store.state, 'add_tag', param, function(resp) {
             if (resp.errno == 0) {
-              this.alertInfo('新增成功');
-              this.tags.unshift(this.addInfo);
-              this.tags[0].id = resp.data.id;
-              this.$store.state.imgUrl = [];
-              this.modal.addShow = false;
+              _this.alertInfo('新增成功');
+              //_this.tags.unshift(this.addInfo);
+              //_this.tags[0].id = resp.data.id;
+              _this.getData(true);
+              _this.$store.state.imgUrl = '';
+              _this.modal.addShow = false;
             } else {
-              this.alertInfo(resp.desc);
+              _this.alertInfo(resp.desc);
             }
           })
         }//else {}
