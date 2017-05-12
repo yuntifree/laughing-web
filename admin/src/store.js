@@ -12,7 +12,7 @@ const state = {
   // 左侧菜单
   sidebar: [],
   tableHeight: 0,
-  imgUrl: [],
+  imgUrl: '',
   viewName: '',
   selItem: '',
 }

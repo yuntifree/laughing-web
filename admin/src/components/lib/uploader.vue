@@ -1,13 +1,12 @@
 <template>
   <div id="container">
     <label class="sex-margin" v-if="labelshow">
-      <input type="radio" class="radio-sex sex-outline" :value="1" v-model="imgtype">图片</label>
+    <input type="radio" class="radio-sex sex-outline" :value="1" v-model="imgtype">图片</label>
     <label class="sex-margin" v-if="labelshow">
       <input type="radio" class="radio-sex sex-outline" :value="0" v-model="imgtype">banner</label>
     <input type="file" id="file"/>
     <div id="upload_file" class='btn btn-info pull-left right10' @click="postFile">开始上传</div>
     <span id="ossfile"></span>
-
   </div>
 </template>
 <script>

@@ -58,6 +58,7 @@
                 label="操作"
                 width="100">
                 <span>
+                   <el-button @click="edittags($index,row)" type="text" size="small">编辑</el-button>
                   <el-button @click="deltags($index,row)" type="text" size="small">删除</el-button>
                 </span>
               </el-table-column>
@@ -90,7 +91,8 @@
               <uploader></uploader>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addPost">确定</el-button>
+              <el-button v-if="modal.editShow" type="primary" @click="editPost">确定</el-button>
+              <el-button v-else type="primary" @click="addPost">确定</el-button>
               <el-button @click="modal.addShow=false">取消</el-button>
             </el-form-item>
           </el-form>
@@ -126,6 +128,7 @@ export default {
       modal: {
         addShow: false,
         dialogShow: false,
+        editShow: false
       },
       dialogCfg: {
         title: '',
@@ -147,7 +150,8 @@ export default {
       checkedTags: [],
       addInfo: {
         content: '',
-        recommend: '0'
+        recommend: '0',
+        img: ''
       },
       tagsInfo: {},
       alertShow: false,
@@ -183,7 +187,6 @@ export default {
   mounted() {
     if (!this.tableHeight) {
       this.$nextTick(()=> {
-        console.log(this.$refs.tableContent.offsetHeight);
         this.$store.state.tableHeight = this.$refs.tableContent.offsetHeight;
       });
     }
@@ -226,6 +229,44 @@ export default {
       CGI.objClear(this.addInfo);
       this.addInfo.recommend = '0';
       this.modal.addShow = true;
+    },
+    edittags(idx, row) {
+      this.selIdx = idx;
+      var u = CGI.clone(row);
+      if (u.recommend) {
+        u.recommend = u.recommend.toString();
+      } else {
+        u.recommend = '0';
+      }
+      CGI.extend(this.addInfo, u);
+      this.modal.title = '编辑';
+      this.modal.editShow = true;
+      this.modal.addShow = true;
+    },
+    editPost() {
+      var _this = this;
+      this.$refs['ruleForm'].validate((valid)=> {
+        if (valid) {
+          var param = CGI.clone(this.addInfo);
+          param.recommend = ~~param.recommend;
+          param.id = this.tags[this.selIdx].id;
+          if (this.$store.state.imgUrl.length>0 && param.headurl !== this.$store.state.imgUrl){
+            param.img = this.$store.state.imgUrl;
+          }
+          CGI.post(this.$store.state, 'mod_tag', param, function(resp) {
+            if (resp.errno == 0) {
+              //CGI.extend(_this.tags[_this.selIdx], param);
+              _this.getData(true)
+              _this.$store.state.imgUrl = '';
+              _this.modal.editShow = false;
+              _this.modal.addShow = false;
+              _this.selIdx = -1;
+            } else {
+              _this.alertInfo(resp.desc);
+            }
+          }) 
+        }
+      })
     },
     addPost() {
       var _this = this;
