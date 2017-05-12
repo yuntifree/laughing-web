@@ -42,6 +42,7 @@ export default {
           var obj = resp.data;
           var name = obj['filename']
           this.$store.state.imgUrl = name
+          alert('uploaded: '+name)
       })
     },
   }
