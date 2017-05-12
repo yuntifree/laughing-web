@@ -226,15 +226,12 @@ export default {
     addPost() {
       this.$refs['ruleForm'].validate((valid)=> {
         if (valid) {
-          var param = {
-            nickname: this.addInfo.nickname,
-            headurl: this.$store.store.imgUrl
-          }
+            var param = CGI.clone(this.addInfo);
+            param.recommend = ~~param.recommend;
           var _this = this;
-          console.log('add')
           CGI.post(this.$store.state, 'add_user', param, function(resp) {
             if (resp.errno == 0) {
-              var u = CGI.clone(param);
+              var u = CGI.clone(_this.addInfo);
               u.id = resp.data.id;
               _this.infos.unshift(u);
               _this.modal.addShow = false;
