@@ -39,11 +39,9 @@ export default {
       formData.append("name", file.name);
 
       CGI.postform(this.$store.state, 'upload_img', formData, (resp) => {
-        alert(JSON.stringify(resp))
           var obj = resp.data;
           var name = obj['filename']
           this.$store.state.imgUrl = name
-          console.log(this.$store.state.imgUrl);
       })
     },
   }
