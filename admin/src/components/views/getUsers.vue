@@ -46,7 +46,7 @@
               <el-table-column
                 inline-template
                 label="热推">
-                <div>{{row.recommend ? '是' : '否'||'-'}}</div>
+                <div>{{row.recommend ? '是' : '-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template

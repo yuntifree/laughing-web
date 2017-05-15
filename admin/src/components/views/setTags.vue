@@ -45,12 +45,12 @@
               <el-table-column
                 inline-template
                 label="是否热门">
-                <div>{{row.hot ? '是':'否' || '-'}}</div>
+                <div>{{row.hot ? '是':'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
                 label="是否推荐">
-                <div>{{row.recommend ? '是':'否' || '-'}}</div>
+                <div>{{row.recommend ? '是':'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
