@@ -1,5 +1,4 @@
 var ajax = require('./ajax')
-console.log(online);
 //var ajax = $.ajax;
 
 

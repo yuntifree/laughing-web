@@ -6,6 +6,11 @@ http://yuilibrary.com/license/
 */
 
 @charset "utf-8";
+/* @font-face{
+  font-family: "GothamRounded";
+  src: url("./GothamRounded-Book.otf");
+} */
+
 html{
   color:#000;
   background:#f7f7f7;
@@ -35,11 +40,13 @@ time, mark, audio, video,label{
   box-sizing:border-box;
   -webkit-box-sizing:border-box;
   font-weight: normal;
+  /*font-family: GothamRounded;*/
 }
-*{
+{
   margin:0;
   padding:0;
-  /*font-family: 'Microsoft YaHei',Helvetica,Arial,sans-serif;*/
+  /*font-family: GothamRounded;
+  font-family: 'Microsoft YaHei',Helvetica,Arial,sans-serif;*/
   box-sizing:border-box;
   -webkit-box-sizing:border-box;
   border:0;

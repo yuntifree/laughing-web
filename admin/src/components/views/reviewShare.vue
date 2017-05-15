@@ -66,7 +66,7 @@
               <el-table-column
                 inline-template
                 label="分享者头像">
-                <div><img :src="row.headurl"></div>
+                <div><img class="height80" :src="row.headurl"></div>
               </el-table-column>
               <el-table-column
                 inline-template
@@ -76,7 +76,7 @@
                 <span>
                   <el-button @click="review($index,row,0)" type="text" size="small">通过</el-button>
                   <el-button @click="review($index,row,1)" type="text" size="small">拒绝</el-button>
-                  <el-button @click="setTag($index,0)" type="text" size="small">设置标签</el-button>
+                  <el-button @click="setTag($index)" type="text" size="small">设置标签</el-button>
                 </span>
               </el-table-column>
             </el-table>
@@ -121,7 +121,7 @@
               <el-checkbox-group v-model="checkedTags">
                 <el-checkbox v-for="tag in tags" :label="tag.id">{{tag.content}}</el-checkbox>
               </el-checkbox-group>
-              <span class="btn btn-info btn-sm" v-show="tagsMore" @click="setTag('',tagsInfo[tagsInfo.length-1].seq)">点击加载更多</span>
+              <span class="btn btn-info btn-sm" v-show="tagsMore" @click="setTag('',tags[tags.length-1].seq)">点击加载更多</span>
             </el-form-item>
              <el-form-item>
               <el-button type="primary" @click.native="tagPost">确定</el-button>
@@ -133,7 +133,7 @@
       <el-dialog v-model="modal.dialogShow"  :title="dialogCfg.title" size="tiny">
         <span>{{dialogCfg.text}}</span>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click.native="tagPost">确 定</el-button>
+          <el-button type="primary" @click.native="rejectPost">确 定</el-button>
           <el-button @click.native="modal.tagShow = false">取 消</el-button>
         </span>
       </el-dialog>
@@ -151,6 +151,7 @@ import CGI from '../../lib/cgi.js'
 import md5 from 'md5'
 
 var searchParams = {};
+var tagNum = 0;
 export default {
   data() {
     return {
@@ -283,13 +284,17 @@ export default {
         }
       })
     },
-    setTag(idx, seq) {
-      this.selIdx = idx;
+    setTag(idx) {
+      //console.log(this.tags[this.tags.length-1].seq);
+      tagNum++;
+      if (tagNum <=1) {
+        this.selIdx = idx || this.selIdx;
+      }
       this.modal.title = '设置标签';
-      if (this.tags.length <= 0) {
+      //if (this.tags.length <= 0) {
         var param = {
           num: 30,
-          seq: seq
+          seq: (tagNum-1)*30
         }
         CGI.post(this.$store.state, 'get_tags', param, (resp)=> {
           if (resp.errno == 0) {
@@ -304,7 +309,7 @@ export default {
             this.alertInfo(resp.desc);
           }
         })
-      }
+      //}
       this.modal.tagShow = true;
     },
     tagPost() {

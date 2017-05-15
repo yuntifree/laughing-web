@@ -26,6 +26,8 @@ import getUsers from './components/views/getUsers.vue'
 import setTags from './components/views/setTags.vue'
 import reviewShare from './components/views/reviewShare.vue'
 import setVersion from './components/views/setVersion.vue'
+import setImg from './components/views/setImg.vue'
+
 export default {
   name: 'app',
   data() {
@@ -54,7 +56,8 @@ export default {
     Login,
     setTags,
     reviewShare,
-    setVersion
+    setVersion,
+    setImg
   },
   // for share components View using.
   mounted() {

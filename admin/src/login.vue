@@ -42,6 +42,10 @@ var sideBar = [{
     "title": "版本管理",
     "name": "setVersion",
     "icon": "yonghuxinxi"
+  },{
+    "title": "图片上传",
+    "name": "setImg",
+    "icon": "yonghuxinxi"
   }]
 }]
 
