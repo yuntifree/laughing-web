@@ -288,8 +288,9 @@ export default {
       //console.log(this.tags[this.tags.length-1].seq);
       tagNum++;
       if (tagNum <=1) {
-        this.selIdx = idx || this.selIdx;
+        this.selIdx = idx;
       }
+      console.log(this.selIdx);
       this.modal.title = '设置标签';
       //if (this.tags.length <= 0) {
         var param = {
@@ -313,14 +314,14 @@ export default {
       this.modal.tagShow = true;
     },
     tagPost() {
-      var idx = this.selIdx;
       var param = {
         id: this.infos[this.selIdx].id,
         tags: this.checkedTags
       }
       CGI.post(this.$store.state, 'add_share_tags', param, (resp)=> {
         if (resp.errno === 0) {
-          this.infos[idx].tags = param.tags.join(',');
+          //this.infos[this.selIdx].tags = param.tags.join(',');
+          this.getData(true);
           this.selIdx = -1;
           this.modal.tagShow = false;
         } else {
