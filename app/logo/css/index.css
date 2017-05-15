@@ -1,7 +1,13 @@
+@font-face{
+  font-family: "GothamRounded";
+  src: url("./GothamRounded-Book.otf");
+}
+
 html,body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  font-family: GothamRounded;
 }
 
 body {

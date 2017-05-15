@@ -30,8 +30,6 @@ menu, nav, output, ruby, section, summary,
 time, mark, audio, video,label{
   margin:0;
   padding:0;
- /*  font-family: "Microsoft YaHei","微软雅黑","宋体","Arial"; */
- font-family: PingFangSC,'Microsoft YaHei',Helvetica,Arial,sans-serif;
   tap-highlight-color: transparent;
   -webkit-tap-highlight-color: transparent;
   box-sizing:border-box;
@@ -41,7 +39,7 @@ time, mark, audio, video,label{
 *{
   margin:0;
   padding:0;
-  font-family: 'Microsoft YaHei',Helvetica,Arial,sans-serif;
+  /*font-family: 'Microsoft YaHei',Helvetica,Arial,sans-serif;*/
   box-sizing:border-box;
   -webkit-box-sizing:border-box;
   border:0;
