@@ -44,7 +44,12 @@
               </el-table-column>
               <el-table-column
                 inline-template
-                label="热门推荐">
+                label="是否热门">
+                <div>{{row.hot ? '是':'否' || '-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
+                label="是否推荐">
                 <div>{{row.recommend ? '是':'否' || '-'}}</div>
               </el-table-column>
               <el-table-column
@@ -80,7 +85,14 @@
             <el-form-item label="content" prop="content">
               <el-input v-model.trim="addInfo.content" placeholder="请填写标签"></el-input>
             </el-form-item>
-            <el-form-item label="热门推荐" prop="recommend">
+            <el-form-item label="热门" prop="hot">
+              <el-radio-group 
+                v-model="addInfo.hot">
+                <el-radio label="1">是</el-radio>
+                <el-radio label="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="推荐" prop="recommend">
               <el-radio-group 
                 v-model="addInfo.recommend">
                 <el-radio label="1">是</el-radio>
@@ -151,6 +163,7 @@ export default {
       addInfo: {
         content: '',
         recommend: '0',
+        hot: '0',
         img: ''
       },
       tagsInfo: {},
@@ -160,8 +173,11 @@ export default {
         content: [
           { required: true, message: '请填写标签', trigger: 'blur'}
         ],
+        hot: [
+          { required: true, message: '请选择是否热门', trigger: 'change' }
+        ],
         recommend: [
-          { required: true, message: '请选择是否热门推荐', trigger: 'change' }
+          { required: true, message: '请选择是否推荐', trigger: 'change' }
         ]
       }
     }
@@ -228,17 +244,17 @@ export default {
     addtags() {
       CGI.objClear(this.addInfo);
       this.addInfo.recommend = '0';
+      this.addInfo.hot = '0';
       this.modal.addShow = true;
     },
     edittags(idx, row) {
+      console.log(JSON.stringify(row));
       this.selIdx = idx;
       var u = CGI.clone(row);
-      if (u.recommend) {
-        u.recommend = u.recommend.toString();
-      } else {
-        u.recommend = '0';
-      }
+      u.recommend = ~~(u.recommend) + ''
+      u.hot = ~~(u.hot) + '';
       CGI.extend(this.addInfo, u);
+      console.log(JSON.stringify(this.addInfo));
       this.modal.title = '编辑';
       this.modal.editShow = true;
       this.modal.addShow = true;
@@ -249,6 +265,7 @@ export default {
         if (valid) {
           var param = CGI.clone(this.addInfo);
           param.recommend = ~~param.recommend;
+          param.hot = ~~param.hot
           param.id = this.tags[this.selIdx].id;
           if (this.$store.state.imgUrl.length>0 && param.headurl !== this.$store.state.imgUrl){
             param.img = this.$store.state.imgUrl;
@@ -272,9 +289,11 @@ export default {
       var _this = this;
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
+          console.log(JSON.stringify(_this.addInfo));
           var param = CGI.clone(_this.addInfo);
           param.img = this.$store.state.imgUrl;
           param.recommend = ~~param.recommend;
+          param.hot = ~~param.hot;
           console.log(JSON.stringify(param));
           CGI.post(this.$store.state, 'add_tag', param, function(resp) {
             if (resp.errno == 0) {

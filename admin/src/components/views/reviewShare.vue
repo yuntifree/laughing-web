@@ -4,7 +4,7 @@
       <header class="app_header">
         <div>
           <button type="button" class="btn btn-info btn-left outline-none">
-            审核状态<select v-model="type" @change="getData(true)"><option :value="{ number: 0 }">未审核</option><option :value="{ number: 1 }">审核通过</option><option :value="{ number: 2 }">审核拒绝</option></select>
+            审核状态<select v-model="type" @change="getData(true)"><option :value="{ number: 0 }">未审核</option><option :value="{ number: 1 }">已审核</option></select>
           </button>
         </div>
         <div>
@@ -74,9 +74,8 @@
                 label="操作"
                 width="100">
                 <span>
-                  <el-button @click="review($index,row,0)" type="text" size="small">通过</el-button>
-                  <el-button @click="review($index,row,1)" type="text" size="small">拒绝</el-button>
-                  <el-button @click="setTag($index)" type="text" size="small">设置标签</el-button>
+                  <el-button @click="review($index,row)" type="text" size="small">审核</el-button>
+                  <el-button @click="setTag($index,false)" type="text" size="small">设置标签</el-button>
                 </span>
               </el-table-column>
             </el-table>
@@ -94,17 +93,14 @@
       <div class="shade" v-if="modal.reviewShow" >
         <div class="edit-form" style="width:600px">
           <div class="form-title">{{modal.title}}</div>
-          <el-form :model="reviewInfo" label-width="80px">
-            <el-form-item label="审核" prop="reject">
-              <el-radio-group 
-                v-model="reviewInfo.reject">
-                <el-radio label="0">通过</el-radio>
-              </el-radio-group>
+          <el-form :model="reviewInfo" :rules="rules" ref="ruleForm" label-width="100px">
+            <el-form-item label="smile" prop="smile">
+              <el-input type="smile" v-model.number="reviewInfo.smile" placeholder="最低smile值为0，最高smile值为5"></el-input>
             </el-form-item>
             <el-form-item 
               label="标题" 
               prop="title">
-              <el-input v-model.number="reviewInfo.title" placeholder="若要修改标题，请填写标题"></el-input>
+              <el-input v-model="reviewInfo.title" placeholder="若要修改标题，请填写标题"></el-input>
             </el-form-item>
              <el-form-item>
               <el-button type="primary" @click.native="reviewPost">确定</el-button>
@@ -113,7 +109,7 @@
           </el-form>
         </div>
       </div>
-      <div class="shade" v-if="modal.tagShow" >
+      <div class="shade" v-if="modal.tagShow">
         <div class="edit-form" style="width:600px">
           <div class="form-title">{{modal.title}}</div>
           <el-form label-width="80px">
@@ -121,7 +117,7 @@
               <el-checkbox-group v-model="checkedTags">
                 <el-checkbox v-for="tag in tags" :label="tag.id">{{tag.content}}</el-checkbox>
               </el-checkbox-group>
-              <span class="btn btn-info btn-sm" v-show="tagsMore" @click="setTag('',tags[tags.length-1].seq)">点击加载更多</span>
+              <span class="btn btn-info btn-sm" v-show="tagsMore" @click="setTag(-1,true)">点击加载更多</span>
             </el-form-item>
              <el-form-item>
               <el-button type="primary" @click.native="tagPost">确定</el-button>
@@ -156,6 +152,7 @@ export default {
   data() {
     return {
       dataReady: false,
+      tagsReady: false,
       pageCfg: {
         total: 1,
         currentPage: 1,
@@ -184,11 +181,15 @@ export default {
       reviewInfo: {
         title: '',
         reject: '0',
-        modify: 0
+        modify: 0,
+        smile: 0,
       },
-      tags: [],
       checkedTags: [],
-      tagsMore: false
+      tagsMore: false,
+      rules: {
+        smile: [{ required: true, message: 'smile不能为空'},
+              { type: 'number', min:0, max: 5,message: '请输入正确的smile值，最小值0，最大值5'}]
+        }
     }
   },
   computed: {
@@ -237,35 +238,35 @@ export default {
         }
       });
     },
-    review(idx, row, reject) {
+    review(idx, row) {
       this.selIdx = idx;
-      if (!reject) {
-        this.modal.title = '审核通过';
-        this.reviewInfo.reject = '0';
-        this.modal.reviewShow = true;
-      } else {
-        this.dialogCfg.title = '审核拒绝';
-        this.dialogCfg.text = '确认要拒绝' + row.id +'审核吗?';
-        this.modal.dialogShow = true;
-      }
+      this.modal.title = '审核通过';
+      this.modal.reviewShow = true;
     },
     reviewPost() {
-      var param = {
-        id: this.infos[this.selIdx].id,
-        reject: 0
-      }
-      if (this.reviewInfo.title) {
-        param.modify = 1,
-        param.title = this.reviewInfo.title
-      }
-      CGI.post(this.$store.state, 'review_share', param, (resp)=> {
-        if (resp.errno == 0) {
-          this.infos.splice(this.selIdx,1);
-          this.reviewInfo.title = '';
-          this.selIdx = -1;
-          this.modal.reviewShow = false; 
-        } else {
-          this.alertInfo(resp.desc);
+      this.$refs['ruleForm'].validate((valid)=> {
+        if (valid) {
+          var param = {
+            id: this.infos[this.selIdx].id,
+            smile: this.reviewInfo.smile,
+            reject: 0
+          }
+          if (this.reviewInfo.title) {
+            param.modify = 1,
+            param.title = this.reviewInfo.title
+          }
+          var _this = this;
+          CGI.post(this.$store.state, 'review_share', param, function(resp) {
+            if (resp.errno == 0) {
+              console.log(resp.errno);
+              _this.infos.splice(_this.selIdx,1);
+              _this.reviewInfo.title = '';
+              _this.selIdx = -1;
+              _this.modal.reviewShow = false; 
+            } else {
+              _this.alertInfo(resp.desc);
+            }
+          })
         }
       })
     },
@@ -284,22 +285,26 @@ export default {
         }
       })
     },
-    setTag(idx) {
+    setTag(idx,more) {
       //console.log(this.tags[this.tags.length-1].seq);
-      tagNum++;
-      if (tagNum <=1) {
+      if (idx >= 0) {
         this.selIdx = idx;
       }
-      console.log(this.selIdx);
       this.modal.title = '设置标签';
-      //if (this.tags.length <= 0) {
+      tagNum++;
+      if (this.tags.length <= 0 || more) {
         var param = {
           num: 30,
           seq: (tagNum-1)*30
         }
         CGI.post(this.$store.state, 'get_tags', param, (resp)=> {
           if (resp.errno == 0) {
-            this.tags =  this.tags.concat(resp.data.infos);
+            if (resp.data.infos && resp.data.infos.length >0) {
+              this.tags =  this.tags.concat(resp.data.infos);
+            }
+            if(param.seq == 0 && this.tags.length >0) {
+              this.modal.tagShow = true;
+            }
             //console.log(this.tagInfo.infos);
             if (this.tags.length < resp.data.total) {
               this.tagsMore = true;
@@ -307,11 +312,12 @@ export default {
               this.tagsMore = false;
             }
           } else {
-            this.alertInfo(resp.desc);
+            this.modal.tagShow = true;
           }
         })
-      //}
-      this.modal.tagShow = true;
+      } else  {
+        this.modal.tagShow = true;
+      }
     },
     tagPost() {
       var param = {
