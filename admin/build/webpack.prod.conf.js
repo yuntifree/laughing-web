@@ -6,9 +6,13 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var env = process.env.NODE_ENV === 'testing'
-  ? require('../config/test.env')
-  : config.build.env
+// var env = process.env.NODE_ENV === 'testing'
+//   ? require('../config/test.env')
+//   : config.build.env
+
+var rel = env.BUILD_ENV == 'deploy'
+
+console.log('build env: '+rel + ' ' + env.BUILD_ENV)
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -31,7 +35,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env,
       '__DEV__': false,
-      '__CDN__': '"http://file.yunxingzh.com"'
+      '__CDN__': '"http://file.yunxingzh.com"',
+      '__HOST__': rel ? '"http://op.laughingus.com"' : '"http://devop.laughingus.com"'
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {

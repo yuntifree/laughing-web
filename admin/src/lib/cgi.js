@@ -1,8 +1,10 @@
 var ajax = require('./ajax')
+console.log(online);
 //var ajax = $.ajax;
 
+
 module.exports = {
-  HOST: __DEV__ ? '':'http://120.76.236.185:8081',
+  HOST: __HOST__,
   //CGI: '/oss-bin/',
   CGI: '/',
   get(state, action, param, callback) {
