@@ -1,6 +1,6 @@
 var ajax = $.ajax;
 window.CGI = {
-  HOST: 'http://120.76.236.185:81',
+  HOST: 'http://api.laughingus.com',
   CGI: '/',
 
   /**
