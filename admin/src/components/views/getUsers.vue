@@ -127,7 +127,7 @@
 <script>
 import CGI from '../../lib/cgi.js'
 import uploader from '../lib/uploader.vue'
-var columns = ['id','手机号','imei','最近在线','备注'];
+var URL = 'http://laugh.us-ca.ufileos.com/'
 var searchParams = {};
 export default {
   data() {
@@ -207,8 +207,13 @@ export default {
       CGI.post(this.$store.state, 'get_users', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          if (data.infos) {
+          if (data.infos && data.infos.length >0) {
             this.infos = data.infos;
+            this.infos.forEach(function(item) {
+              if (!item.recommend) {
+                item.recommend = 0;
+              }
+            })
           }
           this.pageCfg.total = data.total;
           this.dataReady = true;
@@ -232,12 +237,11 @@ export default {
             var _this = this;
           CGI.post(this.$store.state, 'add_user', param, function(resp) {
             if (resp.errno == 0) {
-              _this.$store.state.imgUrl = '';
-              //var u = CGI.clone(_this.addInfo);
-              //u.id = resp.data.id;
-              //u.headUrl = 'http://laugh.us-ca.ufileos.com' +u.headUrl;
-              //_this.infos.unshift(u);
-              _this.getData(true);
+              var u = CGI.clone(param);
+              u.id = resp.data.id;
+              u.headUrl = URL +u.headUrl;
+              _this.infos.unshift(u);
+              //_this.getData(true);
               _this.modal.addShow = false;
             } else {
               _this.alertInfo(resp.desc);
@@ -270,10 +274,12 @@ export default {
           if (this.$store.state.imgUrl.length>0 && param.headurl !== this.$store.state.imgUrl){
             param.headurl = this.$store.state.imgUrl;
           }
-          console.log(param.headurl);
           CGI.post(this.$store.state, 'mod_user', param, function(resp) {
             if (resp.errno == 0) {
-              _this.getData(true);
+              if (_this.$store.state.imgUrl.length > 0) {
+                param.headurl = URL + param.headurl;
+              }
+              CGI.extend(_this.infos[_this.selIdx], param);
               _this.$store.state.imgUrl = '';
               _this.modal.editShow = false;
               _this.modal.addShow = false;

@@ -4,7 +4,7 @@
       <header class="app_header">
         <div>
           <button type="button" class="btn btn-info btn-left outline-none">
-            审核状态<select v-model="type" @change="getData(true)"><option :value="{ number: 0 }">未审核</option><option :value="{ number: 1 }">已审核</option></select>
+            笑点状态<select v-model="type" @change="getData(true)"><option :value="{ number: 0 }">未评分</option><option :value="{ number: 1 }">已评分</option></select>
           </button>
         </div>
         <div>
@@ -74,7 +74,7 @@
                 label="操作"
                 width="100">
                 <span>
-                  <el-button @click="review($index,row)" type="text" size="small">审核</el-button>
+                  <el-button @click="review($index,row)" type="text" size="small">评分(笑点)</el-button>
                   <el-button @click="setTag($index,false)" type="text" size="small">设置标签</el-button>
                 </span>
               </el-table-column>
@@ -240,27 +240,29 @@ export default {
     },
     review(idx, row) {
       this.selIdx = idx;
-      this.modal.title = '审核通过';
+      this.modal.title = '审核';
+      this.reviewInfo.title
+      this.reviewInfo.title = this.infos[this.selIdx].title || '';
       this.modal.reviewShow = true;
     },
     reviewPost() {
       this.$refs['ruleForm'].validate((valid)=> {
         if (valid) {
+          var param = {};
           var param = {
             id: this.infos[this.selIdx].id,
             smile: this.reviewInfo.smile,
             reject: 0
           }
-          if (this.reviewInfo.title) {
+
+          if (this.reviewInfo.title !== this.infos[this.selIdx].title) {
             param.modify = 1,
             param.title = this.reviewInfo.title
           }
           var _this = this;
           CGI.post(this.$store.state, 'review_share', param, function(resp) {
             if (resp.errno == 0) {
-              console.log(resp.errno);
               _this.infos.splice(_this.selIdx,1);
-              _this.reviewInfo.title = '';
               _this.selIdx = -1;
               _this.modal.reviewShow = false; 
             } else {
@@ -305,7 +307,6 @@ export default {
             if(param.seq == 0 && this.tags.length >0) {
               this.modal.tagShow = true;
             }
-            //console.log(this.tagInfo.infos);
             if (this.tags.length < resp.data.total) {
               this.tagsMore = true;
             } else {
@@ -326,8 +327,9 @@ export default {
       }
       CGI.post(this.$store.state, 'add_share_tags', param, (resp)=> {
         if (resp.errno === 0) {
-          //this.infos[this.selIdx].tags = param.tags.join(',');
-          this.getData(true);
+          var tag = param.tags.join(',');
+          this.infos[this.selIdx].tags = this.infos[this.selIdx].tags + tag;
+          //this.getData(true);
           this.selIdx = -1;
           this.modal.tagShow = false;
         } else {

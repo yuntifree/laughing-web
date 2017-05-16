@@ -131,7 +131,7 @@
 <script>
 import CGI from '../../lib/cgi.js'
 import uploader from '../lib/uploader.vue'
-
+var URL = 'http://laugh.us-ca.ufileos.com/';
 export default {
   data() {
     return {
@@ -279,6 +279,9 @@ export default {
           }
           CGI.post(this.$store.state, 'mod_tag', param, function(resp) {
             if (resp.errno == 0) {
+              if (_this.$store.state.imgUrl.length > 0) {
+                param.headurl = URL + param.headurl;
+              }
               CGI.extend(_this.tags[_this.selIdx], param);
               _this.$store.state.imgUrl = '';
               _this.modal.editShow = false;
@@ -299,14 +302,13 @@ export default {
           param.img = this.$store.state.imgUrl;
           param.recommend = ~~param.recommend;
           param.hot = ~~param.hot;
-          console.log(JSON.stringify(param));
           CGI.post(this.$store.state, 'add_tag', param, function(resp) {
             if (resp.errno == 0) {
               _this.alertInfo('新增成功');
+              param.img = URL + param.img;
               var u = CGI.clone(param);
               u.id = resp.data.id;
-              _this.tags.unshift(_this.addInfo);
-              //_this.getData(true);
+              _this.tags.unshift(u);
               _this.$store.state.imgUrl = '';
               _this.modal.addShow = false;
             } else {
