@@ -56,6 +56,6 @@ var instagram = {
 }
 
 window.facebook = facebook;
-window.youtobe = youtobe;
+window.youtube = youtube;
 window.muse = muse;
 window.instagram = instagram;

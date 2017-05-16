@@ -5,7 +5,7 @@
         <uploader></uploader>
         <div class="container-flow">
           <div>图片地址：</div>
-          <p class="up-img" >{{img}}</p>
+          <p class="up-img" >{{imgUrl}}</p>
         </div>
       </div>
     </article>
@@ -18,7 +18,6 @@
   export default{
     data(){
       return {
-
       }
     },
     components: {
@@ -26,7 +25,7 @@
     },
     computed: {
       imgUrl() {
-        return 'http://laugh.us-ca.ufileos.com' +this.$store.state.imgUrl
+        return 'http://laugh.us-ca.ufileos.com/' +this.$store.state.imgUrl
       }
     }
   }

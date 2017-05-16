@@ -142,8 +142,6 @@ export default {
 
       // table data
       infos: [],
-      columns: columns,
-
       selIdx: -1,
       alertShow: false,
       alertMsg: '',
@@ -157,14 +155,6 @@ export default {
         addShow: false,
         editShow: false
       },
-      rules: {
-        nickname: [
-          { required: true, message: '请填写版本号', trigger: 'blur'}
-        ],
-        recommend: [
-          { required: true, message: '请选择是否热门推荐', trigger: 'change'}
-        ]
-      }
     }
   },
   components: {
@@ -239,9 +229,8 @@ export default {
             if (resp.errno == 0) {
               var u = CGI.clone(param);
               u.id = resp.data.id;
-              u.headUrl = URL +u.headUrl;
+              u.headurl = URL +param.headurl;
               _this.infos.unshift(u);
-              //_this.getData(true);
               _this.modal.addShow = false;
             } else {
               _this.alertInfo(resp.desc);

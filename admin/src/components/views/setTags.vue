@@ -131,7 +131,7 @@
 <script>
 import CGI from '../../lib/cgi.js'
 import uploader from '../lib/uploader.vue'
-var URL = 'http://laugh.us-ca.ufileos.com/';
+var URL = 'http://laugh.us-ca.ufileos.com/'
 export default {
   data() {
     return {
@@ -233,7 +233,6 @@ export default {
                 item.hot = 0;
               }
             })
-            console.log(JSON.stringify(this.tags));
           }
           this.pageCfg.total = data.total;
           this.dataReady = true;
@@ -274,13 +273,13 @@ export default {
           param.recommend = ~~param.recommend;
           param.hot = ~~param.hot
           param.id = this.tags[this.selIdx].id;
-          if (this.$store.state.imgUrl.length>0 && param.headurl !== this.$store.state.imgUrl){
+          if (this.$store.state.imgUrl.length>0 && param.img !== this.$store.state.imgUrl){
             param.img = this.$store.state.imgUrl;
           }
           CGI.post(this.$store.state, 'mod_tag', param, function(resp) {
             if (resp.errno == 0) {
               if (_this.$store.state.imgUrl.length > 0) {
-                param.headurl = URL + param.headurl;
+                param.img = URL + param.img;
               }
               CGI.extend(_this.tags[_this.selIdx], param);
               _this.$store.state.imgUrl = '';

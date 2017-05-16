@@ -36,8 +36,8 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env,
       '__DEV__': false,
       '__CDN__': rel ? '"http://op.laughingus.com"' : '"http://devop.laughingus.com"',
-      '__HOST__': rel ? '"http://120.76.236.185:8081"' : '"http://devop.laughingus.com"'
-      //'__HOST__': rel ? '"http://op.laughingus.com"' : '"http://devop.laughingus.com"'
+      //'__HOST__': rel ? '"http://120.76.236.185:8081"' : '"http://devop.laughingus.com"'
+      '__HOST__': rel ? '"http://op.laughingus.com"' : '"http://devop.laughingus.com"'
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
