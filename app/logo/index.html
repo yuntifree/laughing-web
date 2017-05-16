@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"> 
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta name="keywords" content="funny videos,share videos, best videos, video downloader, facebook video downloader, instagram video downloader, youtube video downloader
   " />
   <meta name="description" content="Laughing is an awesome app for share and watch funny videos. The video numbers increase fast, and each videos will be marked 'haha point' by Laughing admin. It is very funny and cute, we hope make you laugh every day.">
@@ -16,14 +16,14 @@
     <p class="web-title g-tac">Did you laugh today?</p>
     <p class="web-text g-tac">We have been collecting lots of funny videos for you for free<br />
         We hope "Laughing"brings you relaxaion and joy after a busy day of work</p>
-    <a class="web-down btn" id="web-btn" href="https://play.google.com/store/apps/details?id=com.laughing" target="_blank"></a>
+    <a class="web-down btn" id="web-btn" href="https://play.google.com/store/apps/details?id=com.laughingus" target="_blank"></a>
   </div>
   <div class="phone" id="phone">
     <img class="phone-logo" src="images/logo.png">
     <p class="phone-title g-tac">Did you laugh today?</p>
     <p class="phone-text g-tac">We have been collecting lots of funny videos for you for free<br />
         We hope "Laughing"brings you relaxaion and joy<br/>  after a busy day of work</p>
-    <a class="phone-down btn" id="phone-btn" href="https://play.google.com/store/apps/details?id=com.laughing" target="_blank"></a>
+    <a class="phone-down btn" id="phone-btn" href="https://play.google.com/store/apps/details?id=com.laughingus" target="_blank"></a>
   </div>
   <script type="text/javascript">
     adapt();
@@ -57,12 +57,12 @@
 
     if (isPC()) {
       document.getElementById('web').style.display = 'block';
-      document.getElementById('web-btn').addEventListener("mouseenter", mouStart, false);     
-      document.getElementById('web-btn').addEventListener("mouseleave", mouEnd, false); 
+      document.getElementById('web-btn').addEventListener("mouseenter", mouStart, false);
+      document.getElementById('web-btn').addEventListener("mouseleave", mouEnd, false);
     } else {
       document.getElementById('phone').style.display = 'block';
-      document.getElementById('phone-btn').addEventListener("touchstart", touStart, false);     
-      document.getElementById('phone-btn').addEventListener("touchend", touEnd, false);      
+      document.getElementById('phone-btn').addEventListener("touchstart", touStart, false);
+      document.getElementById('phone-btn').addEventListener("touchend", touEnd, false);
     }
     function mouStart(event) {
       document.getElementById('web-btn').setAttribute('class', 'web-down btn-press');
