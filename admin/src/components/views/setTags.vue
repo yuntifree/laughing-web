@@ -219,12 +219,21 @@ export default {
         num: 30,
         type: this.selected.number
       }
-
       CGI.post(this.$store.state, 'get_tags', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          if (data.infos) {
+          if (data.infos && data.infos.length >0) {
             this.tags = data.infos;
+            var _this = this;
+            this.tags.forEach(function(item) {
+              if (!item.recommend) {
+                item.recommend = 0;
+              }
+              if (!item.hot) {
+                item.hot = 0;
+              }
+            })
+            console.log(JSON.stringify(this.tags));
           }
           this.pageCfg.total = data.total;
           this.dataReady = true;
@@ -248,13 +257,11 @@ export default {
       this.modal.addShow = true;
     },
     edittags(idx, row) {
-      console.log(JSON.stringify(row));
       this.selIdx = idx;
       var u = CGI.clone(row);
       u.recommend = ~~(u.recommend) + ''
       u.hot = ~~(u.hot) + '';
       CGI.extend(this.addInfo, u);
-      console.log(JSON.stringify(this.addInfo));
       this.modal.title = '编辑';
       this.modal.editShow = true;
       this.modal.addShow = true;
@@ -272,8 +279,7 @@ export default {
           }
           CGI.post(this.$store.state, 'mod_tag', param, function(resp) {
             if (resp.errno == 0) {
-              //CGI.extend(_this.tags[_this.selIdx], param);
-              _this.getData(true)
+              CGI.extend(_this.tags[_this.selIdx], param);
               _this.$store.state.imgUrl = '';
               _this.modal.editShow = false;
               _this.modal.addShow = false;
@@ -289,7 +295,6 @@ export default {
       var _this = this;
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          console.log(JSON.stringify(_this.addInfo));
           var param = CGI.clone(_this.addInfo);
           param.img = this.$store.state.imgUrl;
           param.recommend = ~~param.recommend;
@@ -298,9 +303,10 @@ export default {
           CGI.post(this.$store.state, 'add_tag', param, function(resp) {
             if (resp.errno == 0) {
               _this.alertInfo('新增成功');
-              //_this.tags.unshift(this.addInfo);
-              //_this.tags[0].id = resp.data.id;
-              _this.getData(true);
+              var u = CGI.clone(param);
+              u.id = resp.data.id;
+              _this.tags.unshift(_this.addInfo);
+              //_this.getData(true);
               _this.$store.state.imgUrl = '';
               _this.modal.addShow = false;
             } else {
