@@ -6,6 +6,7 @@ html,body {
 .container {
   width: 100%;
   height: auto;
+  padding-top: 1.24rem;
 }
 .info-video {
   display: block;
@@ -40,12 +41,13 @@ html,body {
 }
 .download {
   width: 100%;
-  height: auto;
+  height: 1.24rem;
+  overflow: hidden;
   position: fixed;
-  left: 0;
+  top: 0;
   bottom: 0;
-  padding: 0.34rem 0.4rem;
-  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.16rem 0.2rem;
+  background-color: rgba(255 , 255, 255, 0.14);
 }
 .down-logo {
   width: 0.92rem;
@@ -57,13 +59,12 @@ html,body {
   height: 100%;
 }
 .down-name {
+  margin-top: 0.1rem;
   font-size: 0.4rem;
-  color: #fff;
 }
 .down-desc {
-  margin-top: 0.1rem;
   font-size: 0.28rem;
-  color: #fff;
+  color: rgb(36, 36, 39);
 }
 .down-url {
   display: block;
@@ -74,7 +75,7 @@ html,body {
   line-height: 0.76rem;
   font-size: 0.32rem;
   color: #000;
-  background-color: #fff;
+  background-color: rgb(255, 248, 50);
 }
 .tip-info {
   width: 140px;
