@@ -52,7 +52,7 @@
                 <img class="g-fl" src="images/xiaodian.png" alt="">
             {{/if}}
             <span class="g-fl">{{views}}views</span>
-        </p> 
+        </p>
     </script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/template.js"></script>
@@ -74,6 +74,9 @@
           } else {
             tipShow(resp.desc);
           }
+        })
+        $('button').click(function() {
+            window.location.href = "https://play.google.com/store/apps/details?id=com.laughingus"
         })
         function adapt() {
           if (document && window) {
@@ -102,7 +105,6 @@
             window.addEventListener(resizeEvt, recalc, false);
           }
         }
-
         if(document.all) {
           ent.getElementById("clickme").click();
         }
@@ -115,7 +117,6 @@
         }
         
         function hah(){
-            
             var a = document.getElementById('vio');
             a.play();
         }
