@@ -24,7 +24,7 @@
     </div>
     <p class="tip-info g-tac"></p>
     <script type="text/html" id="tplInfo">
-       <video class="info-video" loop autoplay="true" controls="true" id="vio">
+       <video class="info-video" loop autoplay="true" controls="true">
           <source src="{{dst}}">
           您的浏览器不支持 HTML5 video 标签。
         </video>
@@ -52,7 +52,7 @@
                 <img class="g-fl" src="images/xiaodian.png" alt="">
             {{/if}}
             <span class="g-fl">{{views}}views</span>
-        </p>
+        </p> 
     </script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/template.js"></script>
@@ -74,9 +74,6 @@
           } else {
             tipShow(resp.desc);
           }
-        })
-        $('button').click(function() {
-            window.location.href = "https://play.google.com/store/apps/details?id=com.laughingus"
         })
         function adapt() {
           if (document && window) {
@@ -104,21 +101,6 @@
             if (!document.addEventListener) return;
             window.addEventListener(resizeEvt, recalc, false);
           }
-        }
-        if(document.all) {
-          ent.getElementById("clickme").click();
-        }
-        // 其它浏览器
-        else {
-          var e = document.createEvent("MouseEvents");
-          e.initEvent("click", true, true);
-          document.getElementById("clickme").dispatchEvent(e);
-          console.log('aa');
-        }
-        
-        function hah(){
-            var a = document.getElementById('vio');
-            a.play();
         }
 
         function tipShow(val) {
