@@ -25,7 +25,7 @@
     },
     computed: {
       imgUrl() {
-        return 'http://laugh.us-ca.ufileos.com/' +this.$store.state.imgUrl
+        return 'http://laugh.ufile.ucloud.com.cn/' +this.$store.state.imgUrl
       }
     }
   }
