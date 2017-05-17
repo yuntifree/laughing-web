@@ -147,7 +147,7 @@ section#main {
   border-radius: 20px;
   border: 1px solid #bbb;
   height: 26px;
-  width: 200px;
+  //width: 200px;
   -webkit-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
   -moz-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
   box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;

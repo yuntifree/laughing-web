@@ -8,10 +8,10 @@
           </button>
         </div>
         <div>
-          <div class="quick_search">
+          <!--div class="quick_search">
             <i class="iconfont icon-search"></i>
             <input class="ipt-search" type="text" placeholder="ID/电话/用户名">
-          </div>
+          </div-->
           <button class="btn btn-default btn-ssm" @click="getData(0)">刷新</button>
         </div>
       </header>

@@ -4,15 +4,15 @@
       <header class="app_header">
         <div>
           <button type="button" class="btn btn-info btn-left outline-none">
-            笑点状态<select v-model="type" @change="getData(true)"><option :value="{ number: 0 }">未评分</option><option :value="{ number: 1 }">已评分</option></select>
+            笑点状态<select v-model="type" @change="getData(0)"><option :value="{ number: 0 }">未评分</option><option :value="{ number: 1 }">已评分</option></select>
           </button>
         </div>
         <div>
           <div class="quick_search">
-            <i class="iconfont icon-search"></i>
-            <input class="ipt-search" type="text" placeholder="ID/电话/用户名">
+            <i class="iconfont icon-search g-fl"></i>
+            <input class="ipt-search" v-model="search" type="number" placeholder="请输入id(数字)搜索" @keyup.enter="searchInfo">
           </div>
-          <button class="btn btn-default btn-ssm" @click="getData(0)">刷新</button>
+          <button class="btn btn-default btn-ssm g-fl" @click="getData(pageCfg.start)">刷新</button>
         </div>
       </header>
       <!--end:右键菜单-->
@@ -46,7 +46,7 @@
               <el-table-column
                 inline-template
                 label="标签">
-                <div>{{row.tags||'-'}}</div>
+                <div>{{makeTag(row.taginfo)||'-'}}</div>
               </el-table-column>
               <el-table-column
                 inline-template
@@ -146,7 +146,6 @@
 import CGI from '../../lib/cgi.js'
 import md5 from 'md5'
 
-var searchParams = {};
 var tagNum = 0;
 export default {
   data() {
@@ -188,8 +187,9 @@ export default {
       tagsMore: false,
       rules: {
         smile: [{ required: true, message: 'smile不能为空'},
-              { type: 'number', min:0, max: 5,message: '请输入正确的smile值，最小值0，最大值5'}]
-        }
+            { type: 'number', min:0, max: 5,message: '请输入正确的smile值，最小值0，最大值5'}]
+      },
+      search: Number
     }
   },
   computed: {
@@ -213,17 +213,14 @@ export default {
         this.$store.state.tableHeight = this.$refs.tableContent.offsetHeight;
       });
     }
-    this.getData(true);
+    this.getData(0);
   },
   methods: {
     getData(reload) {
       //判断分页是否为第一页
-      if (reload) {
-        this.pageCfg.start = 0;
-      }
 
       var param = {
-        seq: this.pageCfg.start || 0,
+        seq: reload,
         num: 30,
         type: this.type.number
       };
@@ -303,6 +300,16 @@ export default {
           if (resp.errno == 0) {
             if (resp.data.infos && resp.data.infos.length >0) {
               this.tags =  this.tags.concat(resp.data.infos);
+              var len = this.infos[idx].taginfo.length;
+              var tagLen = this.tags.length;
+              for(var i =0; i<len; i++) {
+                for (var j=0; j<tagLen; j++) {
+                  if (this.tags[j].id == this.infos[idx].taginfo[i].id) {
+                    this.checkedTags.push(this.tags[j].id);
+                    break;
+                  }
+                }
+              } 
             }
             if(param.seq == 0 && this.tags.length >0) {
               this.modal.tagShow = true;
@@ -327,15 +334,38 @@ export default {
       }
       CGI.post(this.$store.state, 'add_share_tags', param, (resp)=> {
         if (resp.errno === 0) {
-          var tag = param.tags.join(',');
-          this.infos[this.selIdx].tags = this.infos[this.selIdx].tags + tag;
-          //this.getData(true);
+          this.getData(this.pageCfg.start);
           this.selIdx = -1;
           this.modal.tagShow = false;
         } else {
           this.alertInfo(resp.desc);
         }
       })
+    },
+    searchInfo() {
+      if (this.search >0) {
+        var param = {
+          id: ~~this.search
+        }
+        CGI.post(this.$store.state, 'search_share',param, (resp)=> {
+          if (resp.errno === 0) {
+            this.infos = resp.data.infos;
+          } else {
+            this.alertInfo(resp.desc);
+          }
+        })
+      } else {
+        this.alertInfo('请先输入id,再搜索')
+      }
+    },
+    makeTag(val) {
+      var ret = [];
+      if (val && val.length>0) {
+        val.forEach((item)=>{
+          ret.push(item.content);
+        })
+      }
+      return ret.join(',');
     },
     handleChecked(value) {
       console.log(JSON.stringify(value));
@@ -345,7 +375,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageCfg.start = (val-1)*30;
-      this.getData(false);
+      this.getData(this.pageCfg.start);
       console.log(`当前页: ${val}`);
     },
     alertInfo(val) {
@@ -353,7 +383,7 @@ export default {
       this.alertMsg = val;
     },
     refresh() {
-      this.getData(false);
+      this.getData(this.pageCfg.start);
     }
   },
 }
@@ -371,4 +401,15 @@ export default {
 .det_img {
   @include pos(top,26px, right, 37px);
 }
+.quick_search {
+  margin-top: 7px;
+}
+/* .quick_search .iconfont {
+  float: left;
+}
+.ipt-search {
+  display: block;
+  width: 177px;
+   float: left;
+}*/
 </style>

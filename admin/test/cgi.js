@@ -1,7 +1,8 @@
 var express = require('express');
 var agent = require('superagent');
 var router = express.Router();
-var HOST = 'http://120.76.236.185:8081/'
+//var HOST = 'http://120.76.236.185:8081/'
+var HOST = 'http://devop.laughingus.com/'
 
 var testData = require('./testdata');
 
