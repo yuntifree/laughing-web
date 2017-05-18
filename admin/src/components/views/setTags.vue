@@ -44,6 +44,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="优先级">
+                <div>{{row.priority||0}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 label="是否热门">
                 <div>{{row.hot ? '是':'-'}}</div>
               </el-table-column>
@@ -84,6 +89,9 @@
           <el-form ref="ruleForm" :model="addInfo" :rules="rules" label-width="100px">
             <el-form-item label="content" prop="content">
               <el-input v-model.trim="addInfo.content" placeholder="请填写标签"></el-input>
+            </el-form-item>
+            <el-form-item label="priority" prop="priority">
+              <el-input type="number" v-model.number="addInfo.priority" placeholder="请填写优先级"></el-input>
             </el-form-item>
             <el-form-item label="热门" prop="hot">
               <el-radio-group 
@@ -164,7 +172,8 @@ export default {
         content: '',
         recommend: '0',
         hot: '0',
-        img: ''
+        img: '',
+        priority: 0
       },
       tagsInfo: {},
       alertShow: false,
@@ -172,6 +181,10 @@ export default {
       rules: {
         content: [
           { required: true, message: '请填写标签', trigger: 'blur'}
+        ],
+        priority: [
+          { required: true, message: '请填写优先级'},
+          { type: 'number', message: '请输入正确的优先级（数值）'}
         ],
         hot: [
           { required: true, message: '请选择是否热门', trigger: 'change' }
@@ -232,7 +245,11 @@ export default {
               if (!item.hot) {
                 item.hot = 0;
               }
+              if (!item.priority) {
+                item.priority = 0;
+              }
             })
+            console.log(JSON.stringify(this.tags));
           }
           this.pageCfg.total = data.total;
           this.dataReady = true;
