@@ -1,7 +1,7 @@
 var ajax = $.ajax;
 window.CGI = {
-  HOST: 'https://dev.laughingus.com', //测试
-  //HOST: 'https://api.laughingus.com',
+  //HOST: 'https://dev.laughingus.com', //测试
+  HOST: 'https://laughingus.com',
   CGI: '/',
 
   /**
