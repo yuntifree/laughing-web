@@ -327,6 +327,7 @@ export default {
             if(param.seq == 0 && this.tags.length >0) {
               this.modal.tagShow = true;
             }
+            console.log(this.tags.length);
             if (this.tags.length < resp.data.total) {
               this.tagsMore = true;
             } else {
@@ -343,16 +344,19 @@ export default {
     },
     addTag() {
       var idx = this.selIdx;
-      var len = this.infos[idx].taginfo.length;
       var tagLen = this.tags.length;
-      for(var i =0; i<len; i++) {
-        for (var j=0; j<tagLen; j++) {
-          if (this.tags[j].id == this.infos[idx].taginfo[i].id) {
-            this.checkedTags.push(this.tags[j].id);
-            break;
+      if (this.infos[idx].taginfo && this.infos[idx].taginfo.length>0) {
+        if (this.tags && this.tags.length >0) {
+          for(var i =0; i<len; i++) {
+            for (var j=0; j<tagLen; j++) {
+              if (this.tags[j].id == this.infos[idx].taginfo[i].id) {
+                this.checkedTags.push(this.tags[j].id);
+                break;
+              }
+            }
           }
-        }
-      }
+        } 
+      }      
     },
     tagPost() {
       var param = {
