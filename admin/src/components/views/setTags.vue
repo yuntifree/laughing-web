@@ -249,7 +249,6 @@ export default {
                 item.priority = 0;
               }
             })
-            console.log(JSON.stringify(this.tags));
           }
           this.pageCfg.total = data.total;
           this.dataReady = true;

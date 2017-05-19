@@ -55,6 +55,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="笑脸值">
+                <div>{{row.smile||0}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 label="分享者uid">
                 <div>{{row.uid||0}}</div>
               </el-table-column>
@@ -218,7 +223,6 @@ export default {
   methods: {
     getData(reload) {
       //判断分页是否为第一页
-
       var param = {
         seq: reload,
         num: 30,
@@ -227,7 +231,18 @@ export default {
       CGI.post(this.$store.state, 'get_shares', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          this.infos = data.infos;
+          this.infos = data.infos || [];
+          if (data.infos && data.infos.length >0) {
+            var _this = this;
+            this.infos.forEach(function(item) {
+              if (!item.smile) {
+                item.smile = 0;
+              }
+              if (!item.title) {
+                item.title = '';
+              }
+            })
+          }
           this.pageCfg.total = data.total;
           this.dataReady = true;
         } else {
@@ -238,7 +253,7 @@ export default {
     review(idx, row) {
       this.selIdx = idx;
       this.modal.title = '审核';
-      this.reviewInfo.title
+      this.reviewInfo.smile = this.infos[this.selIdx].smile;
       this.reviewInfo.title = this.infos[this.selIdx].title || '';
       this.modal.reviewShow = true;
     },
@@ -259,7 +274,14 @@ export default {
           var _this = this;
           CGI.post(this.$store.state, 'review_share', param, function(resp) {
             if (resp.errno == 0) {
-              _this.infos.splice(_this.selIdx,1);
+              if (_this.type.number) {
+                _this.infos[_this.selIdx].smile = param.smile;
+                if (param.modify) {
+                  _this.infos[_this.selIdx].title = param.title;
+                }
+              } else {
+                _this.infos.splice(_this.selIdx,1);
+              }
               _this.selIdx = -1;
               _this.modal.reviewShow = false; 
             } else {
@@ -285,7 +307,6 @@ export default {
       })
     },
     setTag(idx,more) {
-      //console.log(this.tags[this.tags.length-1].seq);
       if (idx >= 0) {
         this.selIdx = idx;
       }
@@ -404,12 +425,4 @@ export default {
 .quick_search {
   margin-top: 7px;
 }
-/* .quick_search .iconfont {
-  float: left;
-}
-.ipt-search {
-  display: block;
-  width: 177px;
-   float: left;
-}*/
 </style>

@@ -57,6 +57,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="上线">
+                <div>{{row.online ? '是' : '-'||'-'}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 label="标题">
                 <div>{{row.title||'-'}}</div>
               </el-table-column>
@@ -81,7 +86,8 @@
                 label="操作"
                 width="100">
                 <span>
-                  <el-button type="text" size="small">删除</el-button>
+                  <el-button type="text" size="small" @click="edit($index,row)">编辑</el-button>
+                  <el-button type="text" size="small" @click="del($index,row)">删除</el-button>
                 </span>
               </el-table-column>
             </el-table>
@@ -111,10 +117,16 @@
             </el-form-item>
             <el-form-item label="手机终端" prop="term">
               <el-radio-group 
-                placeholder="请填写内部版本号"
                 v-model="addInfo.term">
                 <el-radio label="0">Android</el-radio>
                 <el-radio label="1">Ios</el-radio>
+              </el-radio-group>
+            </el-form-item> 
+            <el-form-item label="上线" prop="online">
+              <el-radio-group 
+                v-model="addInfo.online">
+                <el-radio label="1">是</el-radio>
+                <el-radio label="0">否</el-radio>
               </el-radio-group>
             </el-form-item> 
             <el-form-item label="标题" prop="title">
@@ -142,12 +154,20 @@
               </el-input>
             </el-form-item> 
             <el-form-item>
-              <el-button type="primary" @click="addPost">确定</el-button>
+              <el-button v-if="modal.editShow" type="primary" @click="editPost">确定</el-button>
+              <el-button v-else type="primary" @click="addPost">确定</el-button>
               <el-button @click="modal.addShow=false">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
       </div>
+       <el-dialog v-model="modal.dialogShow"  :title="dialogCfg.title" size="tiny">
+        <span>{{dialogCfg.text}}</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click.native="delPost">确 定</el-button>
+          <el-button @click.native="modal.dialogShow = false">取 消</el-button>
+        </span>
+      </el-dialog>
       <!--alert-->
       <div v-show="alertShow">
         <el-alert
@@ -168,7 +188,8 @@ export default {
       modal: {
         addShow: false,
         title: '',
-        delShow: false
+        dialogShow: false,
+        editShow: false
       },
 
       pageCfg: {
@@ -186,10 +207,15 @@ export default {
         title: '',
         subtitle: '',
         downurl: '',
-        desc: ''
+        desc: '',
+        online: '0'
       },
       alertShow: false,
       alertMsg: '',
+      dialogCfg: {
+        title: '',
+        text: ''
+      },
       rules: {
           version: [
             { required: true, message: '请填写版本号'},
@@ -253,8 +279,16 @@ export default {
       CGI.post(this.$store.state, 'get_versions', param, (resp) => {
         if (resp.errno === 0) {
           var data = resp.data;
-          if (data.infos) {
+          if (data.infos && data.infos.length>0) {
             this.infos = data.infos;
+            this.infos.forEach((item)=> {
+              if (!item.online) {
+                item.online = 0;
+              }
+              if (!item.term) {
+                item.term = 0;
+              }
+            })
           }
           this.pageCfg.total = data.total;
           this.dataReady = true;
@@ -285,7 +319,6 @@ export default {
           //_this.postInfo.img = _this.$store.state.imgUrl[0];
            var param = CGI.clone(this.addInfo);
            param.term = ~~param.term;
-           console.log(JSON.stringify(param));
           CGI.post(this.$store.state, 'add_version', param, function(resp) {
             if (resp.errno == 0) {
                 _this.alertInfo('新增成功');
@@ -299,6 +332,68 @@ export default {
           })
         }//else {}
       })     
+    },
+    edit(idx, row) {
+      this.selIdx = idx;
+      CGI.objClear(this.addInfo);
+      this.addInfo = CGI.clone(row);
+      if (this.addInfo.online) {
+        this.addInfo.online = this.addInfo.online + '';
+      } else {
+        this.addInfo.online = '0'
+      }
+      if (this.addInfo.term) {
+        this.addInfo.term = this.addInfo.term + '';
+      } else {
+        this.addInfo.term = '0';
+      }
+      this.modal.editShow = true;
+      this.modal.addShow = true;
+    },
+    editPost() {
+      var _this = this;
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          //_this.postInfo.img = _this.$store.state.imgUrl[0];
+           var param = CGI.clone(this.addInfo);
+           param.term = ~~param.term;
+           param.online = ~~ param.online;
+           param.deleted = 0;
+          CGI.post(this.$store.state, 'mod_version', param, function(resp) {
+            if (resp.errno == 0) {
+                _this.alertInfo('修改成功');
+                CGI.extend(_this.infos[_this.selIdx], param);
+                _this.selIdx = -1;
+                _this.modal.editShow = false;       
+                _this.modal.addShow = false;
+            } else {
+              _this.alertInfo(resp.desc);
+            }
+          })
+        }//else {}
+      })     
+    },
+    del(idx, row) {
+      this.selIdx = idx;
+      this.addInfo = CGI.clone(row);
+      this.dialogCfg.title= '删除';
+      this.dialogCfg.text = '确认要删除' + row.id +'吗？';
+      this.modal.dialogShow = true;
+    },
+    delPost() {
+          //_this.postInfo.img = _this.$store.state.imgUrl[0];
+      var param = CGI.clone(this.addInfo);
+      param.term = ~~param.term;
+      param.online = ~~ param.online;
+      param.deleted = 1;
+      CGI.post(this.$store.state, 'mod_version', param, (resp)=> {
+        if (resp.errno == 0) {
+          this.infos.splice(this.selIdx,1);
+          this.modal.dialogShow = false;       
+        } else {
+          this.alertInfo(resp.desc);
+        }
+      })
     },
     alertInfo(val) {
       this.alertShow = true;
