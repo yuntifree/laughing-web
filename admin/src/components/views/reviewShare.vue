@@ -311,6 +311,7 @@ export default {
         this.selIdx = idx;
       }
       this.modal.title = '设置标签';
+      this.checkedTags = [];
       tagNum++;
       if (this.tags.length <= 0 || more) {
         var param = {
@@ -321,16 +322,7 @@ export default {
           if (resp.errno == 0) {
             if (resp.data.infos && resp.data.infos.length >0) {
               this.tags =  this.tags.concat(resp.data.infos);
-              var len = this.infos[idx].taginfo.length;
-              var tagLen = this.tags.length;
-              for(var i =0; i<len; i++) {
-                for (var j=0; j<tagLen; j++) {
-                  if (this.tags[j].id == this.infos[idx].taginfo[i].id) {
-                    this.checkedTags.push(this.tags[j].id);
-                    break;
-                  }
-                }
-              } 
+              this.addTag(); 
             }
             if(param.seq == 0 && this.tags.length >0) {
               this.modal.tagShow = true;
@@ -341,11 +333,25 @@ export default {
               this.tagsMore = false;
             }
           } else {
-            this.modal.tagShow = true;
+            this.alertInfo(resp.desc);
           }
         })
       } else  {
+        this.addTag(); 
         this.modal.tagShow = true;
+      }
+    },
+    addTag() {
+      var idx = this.selIdx;
+      var len = this.infos[idx].taginfo.length;
+      var tagLen = this.tags.length;
+      for(var i =0; i<len; i++) {
+        for (var j=0; j<tagLen; j++) {
+          if (this.tags[j].id == this.infos[idx].taginfo[i].id) {
+            this.checkedTags.push(this.tags[j].id);
+            break;
+          }
+        }
       }
     },
     tagPost() {
