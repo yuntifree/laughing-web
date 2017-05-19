@@ -126,7 +126,7 @@
             </el-form-item>
              <el-form-item>
               <el-button type="primary" @click.native="tagPost">确定</el-button>
-              <el-button @click.native="modal.tagShow=false">取消</el-button>
+              <el-button @click.native="modalHide">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -344,9 +344,10 @@ export default {
     },
     addTag() {
       var idx = this.selIdx;
-      var tagLen = this.tags.length;
       if (this.infos[idx].taginfo && this.infos[idx].taginfo.length>0) {
         if (this.tags && this.tags.length >0) {
+          var len = this.infos[idx].taginfo.length;
+          var tagLen = this.tags.length;
           for(var i =0; i<len; i++) {
             for (var j=0; j<tagLen; j++) {
               if (this.tags[j].id == this.infos[idx].taginfo[i].id) {
@@ -366,12 +367,18 @@ export default {
       CGI.post(this.$store.state, 'add_share_tags', param, (resp)=> {
         if (resp.errno === 0) {
           this.getData(this.pageCfg.start);
+          tagNum = 0;
           this.selIdx = -1;
           this.modal.tagShow = false;
         } else {
           this.alertInfo(resp.desc);
         }
       })
+    },
+    modalHide() {
+      tagNum = 0;
+      this.selIdx = -1;
+      this.modal.tagShow = false;
     },
     searchInfo() {
       if (this.search >0) {
