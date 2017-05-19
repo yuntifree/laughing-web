@@ -122,7 +122,7 @@
                 <el-radio label="1">Ios</el-radio>
               </el-radio-group>
             </el-form-item> 
-            <el-form-item label="上线" prop="online">
+            <el-form-item v-if="modal.editShow"  label="上线" prop="online">
               <el-radio-group 
                 v-model="addInfo.online">
                 <el-radio label="1">是</el-radio>
@@ -319,6 +319,7 @@ export default {
           //_this.postInfo.img = _this.$store.state.imgUrl[0];
            var param = CGI.clone(this.addInfo);
            param.term = ~~param.term;
+           delete(param['online']);
           CGI.post(this.$store.state, 'add_version', param, function(resp) {
             if (resp.errno == 0) {
                 _this.alertInfo('新增成功');
