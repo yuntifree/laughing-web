@@ -327,7 +327,6 @@ export default {
             if(param.seq == 0 && this.tags.length >0) {
               this.modal.tagShow = true;
             }
-            console.log(this.tags.length);
             if (this.tags.length < resp.data.total) {
               this.tagsMore = true;
             } else {
