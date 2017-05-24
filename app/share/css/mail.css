@@ -1,7 +1,12 @@
+body {
+ max-width: 1030px;
+ height: auto;
+ margin: 0 auto;
+}
 .phone-container {
-  width: 92%;
+  width: 100%;
   height: auto;
-  padding: 0.3rem 0;
+  padding: 0.3rem;
   margin: 0 auto;
 }
 
@@ -46,6 +51,26 @@
   height: auto;
   padding-top: 0.3rem;
   margin-left: 0.2rem;
+}
+@media screen and (min-width: 750px) and (max-width: 1024px){
+  .video-l,
+  .video-l a {
+    width: 2.8rem;
+  }
+  .video-r {
+    width: 3.6rem;
+    padding-top: 0.2rem;
+  }
+}
+@media screen and (min-width: 1025px) {
+  .video-l,
+  .video-l a {
+    width: 2.8rem;
+  }
+  .video-r {
+    width: 5rem;
+    padding-top: 0.2rem;
+  }
 }
 .video-tit {
   font-size: 0.28rem;
