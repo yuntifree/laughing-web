@@ -3,6 +3,9 @@ html,body {
   min-height: 100%;
   background-color: #fff;
 }
+body {
+  padding-bottom: 0.16rem;
+}
 .container {
   width: 100%;
   height: auto;
@@ -26,7 +29,7 @@ html,body {
 }
 .info-val {
   width: 92%;
-  height: auto;
+  height: 0.4rem;
   margin: 0 auto;
 }
 .info-val img {
@@ -47,7 +50,7 @@ html,body {
   top: 0;
   bottom: 0;
   padding: 0.16rem 0.2rem;
-  background-color: rgba(255 , 255, 255, 0.14);
+  background-color: #fff;
 }
 .down-logo {
   width: 0.92rem;
