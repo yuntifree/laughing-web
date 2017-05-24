@@ -1,10 +1,13 @@
 html,body {
   width: 100%;
   min-height: 100%;
+  max-width: 740px;
   background-color: #fff;
+  margin: 0 auto;
 }
 body {
   padding-bottom: 0.16rem;
+  overflow-x: hidden;
 }
 .container {
   width: 100%;
@@ -44,6 +47,7 @@ body {
 }
 .download {
   width: 100%;
+  max-width: 740px;
   height: 1.24rem;
   overflow: hidden;
   position: fixed;
@@ -52,6 +56,7 @@ body {
   padding: 0.16rem 0.2rem;
   background-color: #fff;
 }
+
 .down-logo {
   width: 0.92rem;
   height: 0.92rem;
@@ -80,6 +85,13 @@ body {
   color: #000;
   background-color: rgb(255, 248, 50);
 }
+/* @media screen and (min-width: 740px){
+  .down-logo {
+    width: 0.5rem;
+    height: 0.5rem; 
+    margin-top: 0.2rem;
+  }
+} */
 .tip-info {
   width: 140px;
   padding: 10px;
