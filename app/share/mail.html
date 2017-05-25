@@ -134,42 +134,5 @@
       <img class="video-img" src="http://laugh.ufile.ucloud.com.cn/f28c8fd5-40b8-4e3c-8b16-1970b79a8c31.jpg">
     </a>
   </div>
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript">
-    adapt();
-    function adapt() {
-      if (document && window) {
-        // init font
-        var docEl = document.documentElement;
-        var isIOS = navigator.userAgent.match(/iphone|ipod|ipad/gi);
-        var dpr = isIOS ? Math.min(window.devicePixelRatio, 3) : 1;
-        dpr = window.top === window.self ? dpr : 1; //被iframe引用时，禁止缩放
-        var scale = 1 / dpr;
-        var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
-
-        docEl.dataset.dpr = dpr;
-        var metaEl = document.createElement('meta');
-        metaEl.name = 'viewport';
-        metaEl.content = 'initial-scale=1,maximum-scale=1, minimum-scale=1';
-        docEl.firstElementChild.appendChild(metaEl);
-        var recalc = function() {
-          var width = docEl.clientWidth;
-          if (width / dpr > 640) {
-              width = 640 * dpr;
-          }
-          docEl.style.fontSize = 100 * (width / 750) + 'px';
-        };
-        recalc();
-        if (!document.addEventListener) return;
-        window.addEventListener(resizeEvt, recalc, false);
-      }
-    }
-    $('.video-btn').on('touchstart', function(e) {
-      $(this).css('backgroundColor','#c01ccc')
-    })
-    $('.video-btn').on('touchend', function(e) {
-      $(this).css('backgroundColor','#c029f3')
-    })
-  </script>
 </body>
 </html>
