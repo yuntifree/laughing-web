@@ -43,6 +43,14 @@ var sideBar = [{
     "name": "setVersion",
     "icon": "yonghuxinxi"
   },{
+    "title": "用户语言",
+    "name": "setLang",
+    "icon": "yonghuxinxi"
+  },{
+    "title": "用户语言关注",
+    "name": "setUserlang",
+    "icon": "yonghuxinxi"
+  },{
     "title": "图片上传",
     "name": "setImg",
     "icon": "yonghuxinxi"

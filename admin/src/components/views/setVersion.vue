@@ -390,7 +390,8 @@ export default {
       CGI.post(this.$store.state, 'mod_version', param, (resp)=> {
         if (resp.errno == 0) {
           this.infos.splice(this.selIdx,1);
-          this.modal.dialogShow = false;       
+          this.modal.dialogShow = false;  
+          this.selIdx = -1;     
         } else {
           this.alertInfo(resp.desc);
         }

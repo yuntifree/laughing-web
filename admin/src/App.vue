@@ -26,6 +26,8 @@ import getUsers from './components/views/getUsers.vue'
 import setTags from './components/views/setTags.vue'
 import reviewShare from './components/views/reviewShare.vue'
 import setVersion from './components/views/setVersion.vue'
+import setLang from './components/views/setLang.vue'
+import setUserlang from './components/views/setUserlang.vue'
 import setImg from './components/views/setImg.vue'
 
 export default {
@@ -57,6 +59,8 @@ export default {
     setTags,
     reviewShare,
     setVersion,
+    setLang,
+    setUserlang,
     setImg
   },
   // for share components View using.

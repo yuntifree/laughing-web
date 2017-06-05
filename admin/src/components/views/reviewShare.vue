@@ -60,6 +60,11 @@
               </el-table-column>
               <el-table-column
                 inline-template
+                label="播放次数">
+                <div>{{row.views||0}}</div>
+              </el-table-column>
+              <el-table-column
+                inline-template
                 label="分享者uid">
                 <div>{{row.uid||0}}</div>
               </el-table-column>
@@ -79,7 +84,7 @@
                 label="操作"
                 width="100">
                 <span>
-                  <el-button @click="review($index,row)" type="text" size="small">评分(笑点)</el-button>
+                  <el-button @click="review($index,row)" type="text" size="small">修改</el-button>
                   <el-button @click="setTag($index,false)" type="text" size="small">设置标签</el-button>
                 </span>
               </el-table-column>
@@ -99,8 +104,11 @@
         <div class="edit-form" style="width:600px">
           <div class="form-title">{{modal.title}}</div>
           <el-form :model="reviewInfo" :rules="rules" ref="ruleForm" label-width="100px">
-            <el-form-item label="smile" prop="smile">
+            <el-form-item label="笑脸值" prop="smile">
               <el-input type="smile" v-model.number="reviewInfo.smile" placeholder="最低smile值为0，最高smile值为5"></el-input>
+            </el-form-item>
+            <el-form-item label="播放次数" prop="views">
+              <el-input type="views" v-model.number="reviewInfo.views" placeholder="最低播放次数为0"></el-input>
             </el-form-item>
             <el-form-item 
               label="标题" 
@@ -187,12 +195,15 @@ export default {
         reject: '0',
         modify: 0,
         smile: 0,
+        views: 0
       },
       checkedTags: [],
       tagsMore: false,
       rules: {
         smile: [{ required: true, message: 'smile不能为空'},
-            { type: 'number', min:0, max: 5,message: '请输入正确的smile值，最小值0，最大值5'}]
+            { type: 'number', min:0, max: 5,message: '请输入正确的smile值，最小值0，最大值5'}],
+        views: [{ required: true, message: 'views不能为空'},
+            { type: 'number', min:0,message: '请输入正确的smile值，最小值0'}],
       },
       search: Number
     }
@@ -253,6 +264,7 @@ export default {
     review(idx, row) {
       this.selIdx = idx;
       this.modal.title = '审核';
+      this.reviewInfo.views = this.infos[this.selIdx].views;
       this.reviewInfo.smile = this.infos[this.selIdx].smile;
       this.reviewInfo.title = this.infos[this.selIdx].title || '';
       this.modal.reviewShow = true;
@@ -264,6 +276,7 @@ export default {
           var param = {
             id: this.infos[this.selIdx].id,
             smile: this.reviewInfo.smile,
+            views: this.reviewInfo.views,
             reject: 0
           }
 
@@ -276,6 +289,7 @@ export default {
             if (resp.errno == 0) {
               if (_this.type.number) {
                 _this.infos[_this.selIdx].smile = param.smile;
+                _this.infos[_this.selIdx].views = param.views;
                 if (param.modify) {
                   _this.infos[_this.selIdx].title = param.title;
                 }
