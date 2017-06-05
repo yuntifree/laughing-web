@@ -214,7 +214,7 @@ export default {
           this.pageCfg.total = data.total;
           this.dataReady = true;
         } else if (resp.errno === 999){
-          this.alertInfo('暂时没有任何数据');
+          console.log('暂时没有任何数据');
         } else {
           this.alertInfo(resp.desc);
         }
@@ -228,7 +228,7 @@ export default {
             this.options = data.infos;
           }
         } else if (resp.errno === 999){
-          this.alertInfo('暂时没有任何语言数据');
+          console.log('暂时没有任何语言数据');
         } else {
           this.alertInfo(resp.desc);
         }

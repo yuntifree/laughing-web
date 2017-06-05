@@ -196,7 +196,9 @@ export default {
           }
           this.pageCfg.total = data.total;
           this.dataReady = true;
-        } else {
+        } else if(resp.errno ===999 ){
+          console.log('无数据')
+        }else {
           this.alertInfo(resp.desc);
         }
       })
