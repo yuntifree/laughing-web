@@ -8,7 +8,7 @@ var facebook = {
     img: 'http://laugh.us-ca.ufileos.com/783f5389-e45f-4583-9779-04b200dcb1c7.jpg'
   },
   {
-    text: 'Open the Laughing app，then you will see the share tips.',
+    text: 'Open the Laughings app，then you will see the share tips.',
     img: 'http://laugh.us-ca.ufileos.com/b5b7bf89-fb0e-4eae-9184-c80ebd4bf2d7.jpg'
   }]
 }
@@ -22,7 +22,7 @@ var youtube = {
     img: 'http://laugh.us-ca.ufileos.com/bed214d1-0dd4-44c2-ac7a-583691c10db6.jpg'
   },
   {
-    text: 'Open the Laughing app，then you will see the share tips.',
+    text: 'Open the Laughings app，then you will see the share tips.',
     img: 'http://laugh.us-ca.ufileos.com/b5b7bf89-fb0e-4eae-9184-c80ebd4bf2d7.jpg'
   }]
 }
@@ -36,7 +36,7 @@ var muse = {
     img: 'http://laugh.us-ca.ufileos.com/4288d240-fafc-41a1-ae2f-28102e3e4563.jpg'
   },
   {
-    text: 'Open the Laughing app，then you will see the share tips.',
+    text: 'Open the Laughings app，then you will see the share tips.',
     img: 'http://laugh.us-ca.ufileos.com/b5b7bf89-fb0e-4eae-9184-c80ebd4bf2d7.jpg'
   }]
 }
@@ -50,7 +50,7 @@ var instagram = {
     img: 'http://laugh.us-ca.ufileos.com/befc9869-cb8b-4698-9df9-01d4e33b6cc4.jpg'
   },
   {
-    text: 'Open the Laughing app，then you will see the share tips.',
+    text: 'Open the Laughings app，then you will see the share tips.',
     img: 'http://laugh.us-ca.ufileos.com/8c189dbe-aacb-4bcf-a1df-460fe09e3d3e.jpg'
   }]
 }
